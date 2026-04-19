@@ -1,0 +1,91 @@
+name: Release
+
+# Triggers:
+#   - push a tag like `v0.1.0` to cut a release
+#   - workflow_dispatch: trigger manually from the Actions tab (no release created)
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write   # needed for the GitHub Release step
+
+jobs:
+  build:
+    name: Build & sign release
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Resolve version
+        id: version
+        run: |
+          # Tag pushes  → strip leading "v"  → semver versionName (e.g. v0.1.0 → 0.1.0)
+          # Manual runs → "0.0.1-dev" sentinel so assembleRelease still succeeds
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION_NAME="${GITHUB_REF#refs/tags/v}"
+          else
+            VERSION_NAME="0.0.1-dev"
+          fi
+          echo "name=$VERSION_NAME" >> "$GITHUB_OUTPUT"
+          echo "Resolved versionName: $VERSION_NAME"
+
+      - name: Decode keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "::error::ANDROID_KEYSTORE_BASE64 secret is not set"
+            exit 1
+          fi
+          mkdir -p "$RUNNER_TEMP/keystore"
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/keystore/release.jks"
+          echo "RELEASE_KEYSTORE_PATH=$RUNNER_TEMP/keystore/release.jks" >> "$GITHUB_ENV"
+
+      - name: Run unit tests
+        run: ./gradlew :app:testReleaseUnitTest -PversionName=${{ steps.version.outputs.name }} --no-daemon
+
+      - name: Assemble release APK + AAB
+        env:
+          RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          RELEASE_KEY_ALIAS:      ${{ secrets.ANDROID_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD:   ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: ./gradlew :app:assembleRelease :app:bundleRelease -PversionName=${{ steps.version.outputs.name }} --no-daemon
+
+      - name: Wipe keystore from runner
+        if: always()
+        run: rm -f "$RUNNER_TEMP/keystore/release.jks"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: helm-pad-release
+          path: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab

@@ -6,7 +6,7 @@ English · [中文](README.zh.md)
 
 # Helm Pad
 
-> Turn the Android phone in your hand into a small Bluetooth keyboard and trackpad that sits next to your laptop, so you can keep nudging an AI coding agent without leaving your seat — or your coffee.
+> Turn the Android phone/pad in your hand into a small Bluetooth keyboard and trackpad that sits next to your laptop, so you can keep nudging an AI coding agent without leaving your seat — or your coffee.
 
 <p align="center">
   <img src="assets/hero.svg" alt="Helm Pad hero" width="100%">
@@ -43,10 +43,6 @@ You'll need an Android 9+ phone and a Mac or Windows machine.
 3. Open Helm Pad and follow the on-screen setup once.
 
 It works fine on the phone you carry day to day. It also works fine on a spare phone you keep on the desk, if you'd rather not mix it with personal use. There's nothing to install on the laptop side.
-
-## The name
-
-**Helm** (the wheel you steer with) + **Pad** (the surface under your hand). It's not trying to automate the agent loop — just giving your hand a place to rest while the loop runs.
 
 ## Licence
 

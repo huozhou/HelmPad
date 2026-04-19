@@ -8,6 +8,8 @@
 
 > 把手里这部 Android 手机变成一只贴在键盘旁的小型蓝牙键鼠,这样我就可以一边端着咖啡、一边接着推 AI 代理,人不必从椅背上挪开。
 
+**网站:** <https://huozhou.github.io/HelmPad/>
+
 <p align="center">
   <img src="assets/hero.svg" alt="Helm Pad hero" width="100%">
 </p>
@@ -46,4 +48,4 @@
 
 ## 许可
 
-暂未选定,正式发版前会挑一个。
+采用 MIT 许可证 — 见 [LICENSE](./LICENSE)。

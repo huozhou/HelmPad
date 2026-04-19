@@ -1,0 +1,85 @@
+# Helm Pad — GitHub Pages deploy.
+#
+# IMPORTANT (one-time, manual):
+#   Settings → Pages → Source MUST be set to "GitHub Actions".
+#   Without that, this workflow will succeed but the site stays 404.
+#
+# This workflow stages pages/ + assets/ into a single _site/ directory so the
+# HTML can use relative paths like `assets/hero.svg` while the SVGs remain
+# in the repo root (where README.md and other Markdown still need them).
+# That keeps a single source of truth for brand SVGs across README and site.
+#
+# Why pages/ and not docs/?
+#   This repo's local convention reserves /docs/ for personal scratch (see
+#   .git/info/exclude). The marketing site lives in /pages/ so it stays inside
+#   the project's commit history without colliding with that convention.
+
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "pages/**"
+      - "assets/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, but never cancel an in-progress one
+# (cancelling mid-deploy can leave the site in an unhealthy state).
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build site artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Stage site (pages/ + shared assets/)
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          cp -R pages/. _site/
+          # Brand SVGs live in /assets/ so README.md (rendered on github.com)
+          # and the site share a single source. Stage them under _site/assets/.
+          if [ -d assets ]; then
+            cp -R assets _site/assets
+          fi
+          # Sanity check: ensure the entry pages and brand SVGs are present.
+          test -f _site/index.html
+          test -f _site/zh/index.html
+          test -f _site/assets/hero.svg
+          test -f _site/assets/loop.svg
+          ls -R _site
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

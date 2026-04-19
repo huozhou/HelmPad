@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helm Pad — Bluetooth keyboard & trackpad for AI pair-programming</title>
+  <meta name="description" content="Turn your Android phone into a small Bluetooth keyboard and trackpad that sits next to your laptop, so you can keep nudging an AI coding agent without leaving your seat — or your coffee.">
+
+  <meta property="og:title" content="Helm Pad — Bluetooth keyboard & trackpad for AI pair-programming">
+  <meta property="og:description" content="Turn your Android phone into a small Bluetooth keyboard and trackpad. Sideload the APK, pair it like any other keyboard, keep nudging your AI agent.">
+  <meta property="og:image" content="https://huozhou.github.io/HelmPad/assets/hero.svg">
+  <meta property="og:url" content="https://huozhou.github.io/HelmPad/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="zh_CN">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Helm Pad">
+  <meta name="twitter:description" content="A small Bluetooth keyboard & trackpad for steering AI coding agents from the phone in your hand.">
+  <meta name="twitter:image" content="https://huozhou.github.io/HelmPad/assets/hero.svg">
+
+  <link rel="alternate" hreflang="en" href="https://huozhou.github.io/HelmPad/">
+  <link rel="alternate" hreflang="zh-CN" href="https://huozhou.github.io/HelmPad/zh/">
+  <link rel="alternate" hreflang="x-default" href="https://huozhou.github.io/HelmPad/">
+
+  <link rel="icon" type="image/svg+xml" href="assets/hero.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="Helm Pad home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <strong>Helm Pad</strong>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="https://github.com/huozhou/HelmPad" rel="external">GitHub <span aria-hidden="true">↗</span></a>
+      <a href="zh/" hreflang="zh-CN" lang="zh-CN">中文</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">Android · Bluetooth HID · Free &amp; open source</p>
+        <h1>Steer your AI coding agent <span class="accent">from the phone in your hand.</span></h1>
+        <p class="tagline">Turn an Android phone or pad into a small Bluetooth keyboard and trackpad that sits next to your laptop — so you can keep nudging an AI agent without leaving your seat, or your coffee.</p>
+        <p class="cta-row">
+          <a id="cta-download"
+             class="btn btn-primary"
+             href="https://github.com/huozhou/HelmPad/releases/latest"
+             data-i18n-fallback="Download from Releases →"
+             data-i18n-template="Download {version} APK"
+             rel="external">
+            Download from Releases <span aria-hidden="true">→</span>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/huozhou/HelmPad" rel="external">View source on GitHub <span aria-hidden="true">↗</span></a>
+        </p>
+        <p class="cta-note">Android 9+ · Mac or Windows · sideload APK (unsigned-source prompt is expected)</p>
+      </div>
+      <figure class="hero-figure">
+        <img src="assets/hero.svg" alt="Helm Pad on an Android phone next to a laptop">
+      </figure>
+    </section>
+
+    <section class="what" id="what">
+      <h2>What it does</h2>
+      <p class="lead">To the laptop it just looks like a regular Bluetooth keyboard and mouse — no companion app, no driver, no permissions dance. On the phone:</p>
+      <ul class="feature-list">
+        <li>
+          <h3>Eight macros, two rows</h3>
+          <p><strong>Approve · Esc · Cycle mode · ↑</strong> and <strong>Switch model · New session · Compact · ↓</strong>. The ones you actually press most during an agent loop.</p>
+        </li>
+        <li>
+          <h3>The rest of the screen is a real trackpad</h3>
+          <p>Single-finger move and tap, two-finger scroll, two-finger tap for right-click, long-press to drag.</p>
+        </li>
+        <li>
+          <h3>Auto-detects Mac vs Windows</h3>
+          <p>Picks the matching modifier key (Cmd vs Ctrl), so the same phone works on either machine without you thinking about it.</p>
+        </li>
+      </ul>
+      <figure class="loop-figure">
+        <img src="assets/loop.svg" alt="Before / after: steering an agent with vs without Helm Pad">
+      </figure>
+      <p class="vibe">The use I keep coming back to: agent is running, I'm leaning back with the phone in one hand and a coffee in the other. It pauses for input, I thumb <em>Approve</em>, leaning stays leaning. The break stays a break.</p>
+    </section>
+
+    <section class="install" id="install">
+      <h2>Trying it</h2>
+      <p>You'll need an Android 9+ phone and a Mac or Windows machine.</p>
+      <ol class="steps">
+        <li>
+          <h3>Grab the APK and install it</h3>
+          <p>Download the latest signed APK and open it on your phone. Android will show an <em>Install from unknown source</em> prompt — that's expected for sideloaded apps. There is no Play Store listing.</p>
+        </li>
+        <li>
+          <h3>Pair from your laptop</h3>
+          <p>From the laptop's Bluetooth settings, pair the phone like any other keyboard. No driver, no companion app on the laptop side.</p>
+        </li>
+        <li>
+          <h3>Open Helm Pad once</h3>
+          <p>Follow the on-screen setup. Done — start nudging.</p>
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p id="release-meta" hidden>
+      <span id="release-version"></span> · released <time id="release-date"></time> · <a id="release-changelog" href="https://github.com/huozhou/HelmPad/releases/latest" rel="external">changelog <span aria-hidden="true">→</span></a>
+    </p>
+    <p>
+      <a href="https://github.com/huozhou/HelmPad/blob/main/README.md" rel="external">Read the full story on GitHub <span aria-hidden="true">→</span></a>
+    </p>
+    <p class="meta">
+      Released under the <a href="https://github.com/huozhou/HelmPad/blob/main/LICENSE" rel="external">MIT License</a>.
+      <a href="zh/" hreflang="zh-CN" lang="zh-CN">中文版</a>
+    </p>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

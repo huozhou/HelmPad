@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helm Pad — 给 AI 编码代理用的蓝牙键盘 + 触控板</title>
+  <meta name="description" content="把手里这部 Android 手机变成一只贴在键盘旁的小型蓝牙键鼠,这样你就可以一边端着咖啡、一边接着推 AI 代理,人不必从椅背上挪开。">
+
+  <meta property="og:title" content="Helm Pad — 给 AI 编码代理用的蓝牙键盘 + 触控板">
+  <meta property="og:description" content="把手里这部 Android 手机变成一只小型蓝牙键鼠,sideload 安装,像配普通键盘一样配对,继续推 AI 代理。">
+  <meta property="og:image" content="https://huozhou.github.io/HelmPad/assets/hero.svg">
+  <meta property="og:url" content="https://huozhou.github.io/HelmPad/zh/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale:alternate" content="en_US">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Helm Pad">
+  <meta name="twitter:description" content="一只小型蓝牙键鼠,用手里这部 Android 手机推 AI 编码代理。">
+  <meta name="twitter:image" content="https://huozhou.github.io/HelmPad/assets/hero.svg">
+
+  <link rel="alternate" hreflang="en" href="https://huozhou.github.io/HelmPad/">
+  <link rel="alternate" hreflang="zh-CN" href="https://huozhou.github.io/HelmPad/zh/">
+  <link rel="alternate" hreflang="x-default" href="https://huozhou.github.io/HelmPad/">
+
+  <link rel="icon" type="image/svg+xml" href="../assets/hero.svg">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="Helm Pad 首页">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <strong>Helm Pad</strong>
+    </a>
+    <nav class="site-nav" aria-label="主导航">
+      <a href="https://github.com/huozhou/HelmPad" rel="external">GitHub <span aria-hidden="true">↗</span></a>
+      <a href="../" hreflang="en" lang="en">English</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">Android · 蓝牙 HID · 免费开源</p>
+        <h1>用手里这部手机, <span class="accent">把 AI 编码代理一路推到底。</span></h1>
+        <p class="tagline">把 Android 手机或平板变成一只贴在键盘旁的小型蓝牙键鼠,这样你就可以一边端着咖啡、一边接着推 AI 代理,人不必从椅背上挪开。</p>
+        <p class="cta-row">
+          <a id="cta-download"
+             class="btn btn-primary"
+             href="https://github.com/huozhou/HelmPad/releases/latest"
+             data-i18n-fallback="从 Releases 下载 →"
+             data-i18n-template="下载 {version} APK"
+             rel="external">
+            从 Releases 下载 <span aria-hidden="true">→</span>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/huozhou/HelmPad" rel="external">在 GitHub 看源码 <span aria-hidden="true">↗</span></a>
+        </p>
+        <p class="cta-note">Android 9 及以上 · Mac 或 Windows · 走 sideload(安装时会有"未知来源"提示,属正常)</p>
+      </div>
+      <figure class="hero-figure">
+        <img src="../assets/hero.svg" alt="一部安装了 Helm Pad 的 Android 手机摆在笔记本旁">
+      </figure>
+    </section>
+
+    <section class="what" id="what">
+      <h2>它做的事</h2>
+      <p class="lead">对 Mac 或 Windows 来说,这部手机就是一只标准蓝牙键盘加鼠标——电脑端不用装伴侣 app、不用装驱动、不用走任何权限弹窗。在手机这边:</p>
+      <ul class="feature-list">
+        <li>
+          <h3>八个宏分两排</h3>
+          <p><strong>Approve · Esc · Cycle mode · ↑</strong> 与 <strong>Switch model · New session · Compact · ↓</strong>——跑 agent 循环里最常按的那几个。</p>
+        </li>
+        <li>
+          <h3>剩下的整片屏幕是一只真触控板</h3>
+          <p>单指移动+点击,双指滚动,双指点击 = 右键,长按拖动。</p>
+        </li>
+        <li>
+          <h3>自动识别 Mac 还是 Windows</h3>
+          <p>用对应的修饰键(Cmd / Ctrl),同一部手机在两套机器之间换,你不必动手切。</p>
+        </li>
+      </ul>
+      <figure class="loop-figure">
+        <img src="../assets/loop.svg" alt="对照:有 Helm Pad 与没有 Helm Pad 时推 agent 的姿势">
+      </figure>
+      <p class="vibe">最让我反复回到的场景:agent 在跑,我一只手端咖啡、一只手拿着手机往后靠。它停下来要确认,我拇指点一下 <em>Approve</em>,人没坐起来,那份"靠"还在,那份"歇着"也还在。</p>
+    </section>
+
+    <section class="install" id="install">
+      <h2>怎么装</h2>
+      <p>需要一部 Android 9+ 的手机,以及一台 Mac 或 Windows 电脑。</p>
+      <ol class="steps">
+        <li>
+          <h3>下载 APK 并安装</h3>
+          <p>下载最新签名 APK,在手机上打开。Android 会弹"未知来源安装"提示——这对 sideload 应用是正常现象。本项目不上架 Play Store。</p>
+        </li>
+        <li>
+          <h3>从笔记本上配对</h3>
+          <p>在笔记本的蓝牙设置里,像配普通键盘一样配对手机。电脑侧不需要装驱动,也不需要装伴侣 app。</p>
+        </li>
+        <li>
+          <h3>打开 Helm Pad 走一次首屏</h3>
+          <p>跟着屏幕引导走一遍,完事——开始推。</p>
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p id="release-meta" hidden>
+      <span id="release-version"></span> · 发布于 <time id="release-date"></time> · <a id="release-changelog" href="https://github.com/huozhou/HelmPad/releases/latest" rel="external">更新日志 <span aria-hidden="true">→</span></a>
+    </p>
+    <p>
+      <a href="https://github.com/huozhou/HelmPad/blob/main/README.zh.md" rel="external">在 GitHub 阅读完整说明 <span aria-hidden="true">→</span></a>
+    </p>
+    <p class="meta">
+      采用 <a href="https://github.com/huozhou/HelmPad/blob/main/LICENSE" rel="external">MIT 许可证</a>。
+      <a href="../" hreflang="en" lang="en">English version</a>
+    </p>
+  </footer>
+
+  <script src="../app.js" defer></script>
+</body>
+</html>

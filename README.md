@@ -8,6 +8,8 @@ English · [中文](README.zh.md)
 
 > Turn the Android phone/pad in your hand into a small Bluetooth keyboard and trackpad that sits next to your laptop, so you can keep nudging an AI coding agent without leaving your seat — or your coffee.
 
+**Website:** <https://huozhou.github.io/HelmPad/>
+
 <p align="center">
   <img src="assets/hero.svg" alt="Helm Pad hero" width="100%">
 </p>
@@ -46,4 +48,4 @@ It works fine on the phone you carry day to day. It also works fine on a spare p
 
 ## Licence
 
-Not chosen yet. I'll pick one before tagging a stable release.
+Released under the MIT License — see [LICENSE](./LICENSE).

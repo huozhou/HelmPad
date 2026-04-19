@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Splash screen theme applied to the manifest entry. Backported to API 28+
+         by androidx.core.splashscreen. The animated icon is the launcher
+         foreground (Rotor) so the splash reads as a continuation of the launch
+         tap. Background stays as a solid color (not a gradient) to avoid
+         renderer color-stop drift against the adaptive-icon background. -->
+    <style name="Theme.HelmPad.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.HelmPad</item>
+    </style>
+
+    <!-- Post-splash theme — the activity rethemes itself onto this before
+         Compose takes over. -->
+    <style name="Theme.HelmPad" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+</resources>

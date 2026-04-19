@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 500" width="100%" role="img" aria-label="Helm Pad hero">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF8F1"/>
+      <stop offset="100%" stop-color="#FBE9D7"/>
+    </linearGradient>
+    <linearGradient id="phoneBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E1B19"/>
+      <stop offset="100%" stop-color="#2A2623"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFCF8"/>
+      <stop offset="100%" stop-color="#F6EADC"/>
+    </linearGradient>
+    <linearGradient id="tilePrimary" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE1C5"/>
+      <stop offset="100%" stop-color="#FFD1A6"/>
+    </linearGradient>
+    <linearGradient id="tileDanger" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FDD5CE"/>
+      <stop offset="100%" stop-color="#F8B5A9"/>
+    </linearGradient>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feOffset dx="0" dy="3"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="dots" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="1.2" cy="1.2" r="1.2" fill="#E9C9A6" opacity="0.55"/>
+    </pattern>
+  </defs>
+
+  <rect width="880" height="500" fill="url(#bg)"/>
+
+  <text x="44" y="56" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="22" font-weight="700" fill="#3D2A1B">Helm Pad</text>
+  <text x="44" y="80" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="13" fill="#8A6A4E">Vibe coding Bluetooth keyboard &amp; trackpad</text>
+
+  <!-- Phone -->
+  <g transform="translate(60,108)" filter="url(#soft)">
+    <rect x="0" y="0" width="268" height="360" rx="36" ry="36" fill="url(#phoneBody)"/>
+    <rect x="12" y="14" width="244" height="332" rx="24" ry="24" fill="url(#screen)"/>
+    <circle cx="134" cy="24" r="3" fill="#3A322D"/>
+
+    <g transform="translate(20,40)">
+      <circle cx="8" cy="8" r="5" fill="#2FB863"/>
+      <text x="22" y="12" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="11" font-weight="600" fill="#2A2623">Connected</text>
+      <rect x="140" y="-2" width="86" height="22" rx="11" fill="#FFE9D1" stroke="#E9B98A" stroke-width="1"/>
+      <svg x="150" y="2" width="12" height="14" viewBox="0 0 384 512">
+        <path fill="#7A4A1F" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+      </svg>
+      <text x="167" y="12" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="10" font-weight="600" fill="#7A4A1F">macOS &#x25BE;</text>
+    </g>
+
+    <g transform="translate(20,74)">
+      <rect width="224" height="104" rx="14" fill="#FAEEDD" stroke="#E8CFA8" stroke-width="1.2"/>
+      <rect width="224" height="104" rx="14" fill="url(#dots)"/>
+      <text x="112" y="58" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="10" fill="#9E7B53" opacity="0.85">trackpad &#xB7; move / tap / scroll</text>
+    </g>
+
+    <g transform="translate(20,192)" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial">
+      <!-- row 1 -->
+      <g>
+        <rect x="0"  y="0" width="52" height="46" rx="10" fill="url(#tilePrimary)"/>
+        <text x="26" y="22" text-anchor="middle" font-size="16" font-weight="700" fill="#3D2A1B">&#x2713;</text>
+        <text x="26" y="38" text-anchor="middle" font-size="8"  fill="#5A3F24">Approve</text>
+
+        <rect x="58" y="0" width="52" height="46" rx="10" fill="url(#tileDanger)"/>
+        <text x="84" y="22" text-anchor="middle" font-size="16" font-weight="700" fill="#7A2E22">&#x2715;</text>
+        <text x="84" y="38" text-anchor="middle" font-size="8"  fill="#7A2E22">Reject</text>
+
+        <rect x="116" y="0" width="52" height="46" rx="10" fill="url(#tileDanger)"/>
+        <text x="142" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#7A2E22">&#x23F8;</text>
+        <text x="142" y="38" text-anchor="middle" font-size="8"  fill="#7A2E22">Interrupt</text>
+
+        <rect x="174" y="0" width="52" height="46" rx="10" fill="url(#tilePrimary)"/>
+        <text x="200" y="22" text-anchor="middle" font-size="11" font-weight="700" fill="#3D2A1B">Plan</text>
+        <text x="200" y="38" text-anchor="middle" font-size="8"  fill="#5A3F24">Mode</text>
+      </g>
+      <!-- row 2 -->
+      <g transform="translate(0,52)">
+        <rect x="0"  y="0" width="52" height="46" rx="10" fill="url(#tilePrimary)"/>
+        <text x="26" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#3D2A1B">&#x21C4;</text>
+        <text x="26" y="38" text-anchor="middle" font-size="8"  fill="#5A3F24">Model</text>
+
+        <rect x="58" y="0" width="52" height="46" rx="10" fill="url(#tileDanger)"/>
+        <text x="84" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#7A2E22">&#x21BB;</text>
+        <text x="84" y="38" text-anchor="middle" font-size="8"  fill="#7A2E22">New</text>
+
+        <rect x="116" y="0" width="52" height="46" rx="10" fill="url(#tilePrimary)"/>
+        <text x="142" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#3D2A1B">&#x21CA;</text>
+        <text x="142" y="38" text-anchor="middle" font-size="8"  fill="#5A3F24">Compact</text>
+
+        <rect x="174" y="0" width="52" height="46" rx="10" fill="url(#tilePrimary)"/>
+        <text x="200" y="22" text-anchor="middle" font-size="16" font-weight="700" fill="#3D2A1B">@</text>
+        <text x="200" y="38" text-anchor="middle" font-size="8"  fill="#5A3F24">File</text>
+      </g>
+      <!-- row 3 -->
+      <g transform="translate(0,104)">
+        <rect x="0"  y="0" width="52" height="46" rx="10" fill="url(#tilePrimary)"/>
+        <text x="26" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#3D2A1B">&#x21E5;</text>
+        <text x="26" y="38" text-anchor="middle" font-size="8"  fill="#5A3F24">Tab</text>
+
+        <rect x="58" y="0" width="52" height="46" rx="10" fill="url(#tilePrimary)"/>
+        <text x="84" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#3D2A1B">&#x21B5;</text>
+        <text x="84" y="38" text-anchor="middle" font-size="8"  fill="#5A3F24">Enter</text>
+
+        <rect x="116" y="0" width="52" height="46" rx="10" fill="url(#tilePrimary)"/>
+        <text x="142" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#3D2A1B">Esc</text>
+        <text x="142" y="38" text-anchor="middle" font-size="8"  fill="#5A3F24">&#x238B;</text>
+
+        <rect x="174" y="0" width="52" height="46" rx="10" fill="url(#tilePrimary)"/>
+        <text x="200" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#3D2A1B">&#x2191;</text>
+        <text x="200" y="38" text-anchor="middle" font-size="8"  fill="#5A3F24">History</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- BLE arc -->
+  <g>
+    <path d="M 340 260 C 420 200, 500 200, 580 260" fill="none" stroke="#E9973F" stroke-width="2" stroke-dasharray="6 5" opacity="0.8"/>
+    <path d="M 340 280 C 420 340, 500 340, 580 280" fill="none" stroke="#E9973F" stroke-width="2" stroke-dasharray="6 5" opacity="0.45"/>
+    <g transform="translate(448,220)">
+      <rect x="-42" y="-16" width="84" height="28" rx="14" fill="#FFFFFF" stroke="#E9B98A" stroke-width="1"/>
+      <text x="0" y="4" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="11" font-weight="600" fill="#7A4A1F">BLE HID</text>
+    </g>
+    <g transform="translate(448,316)">
+      <text x="0" y="0" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="10" fill="#9E7B53">zero install on host</text>
+    </g>
+  </g>
+
+  <!-- Laptop -->
+  <g transform="translate(560,138)" filter="url(#soft)">
+    <rect x="0" y="0" width="282" height="188" rx="10" fill="#131821" stroke="#2B3240" stroke-width="1"/>
+    <rect x="10" y="10" width="262" height="168" rx="6" fill="#0D1117"/>
+    <path d="M -14 198 L 296 198 L 282 216 L 0 216 Z" fill="#AAB4C0"/>
+    <rect x="118" y="198" width="46" height="4" rx="2" fill="#7F8A99"/>
+
+    <g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="10">
+      <text x="22" y="34" fill="#7EE787">~/project</text>
+      <text x="94" y="34" fill="#9098A4">&#xB7;</text>
+      <text x="104" y="34" fill="#E6EDF3">claude</text>
+      <text x="22" y="56" fill="#E6EDF3">&#x25CF;  Writing tests for <tspan fill="#79C0FF">KeymapResolver</tspan>...</text>
+      <text x="22" y="76" fill="#E6EDF3">&#x25CF;  Running <tspan fill="#FFA657">./gradlew test</tspan></text>
+      <text x="22" y="98" fill="#9098A4">--------------------------------</text>
+      <text x="22" y="116" fill="#E6EDF3">Run this tool call?</text>
+      <text x="36" y="132" fill="#9098A4">1)</text>
+      <text x="54" y="132" fill="#E6EDF3">Yes</text>
+      <text x="36" y="146" fill="#9098A4">2)</text>
+      <text x="54" y="146" fill="#E6EDF3">Yes, don&#x2019;t ask again</text>
+      <text x="36" y="160" fill="#9098A4">3)</text>
+      <text x="54" y="160" fill="#E6EDF3">No, tell Claude what to do</text>
+      <rect x="22" y="168" width="6" height="10" fill="#7EE787"/>
+    </g>
+  </g>
+
+  <text x="700" y="410" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="11" fill="#8A6A4E">macOS &#xB7; Windows &#xB7; looks like a plain Bluetooth keyboard</text>
+
+  <text x="194" y="492" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="11" fill="#8A6A4E">An Android phone, parked next to your keyboard</text>
+</svg>

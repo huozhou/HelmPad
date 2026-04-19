@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Helm Pad</string>
+    <string name="app_tagline_line1">Helm Pad</string>
+    <string name="app_tagline_line2">Vibe coding Bluetooth keyboard &amp; trackpad</string>
+
+    <!-- Connection states -->
+    <string name="state_idle">Idle</string>
+    <string name="state_proxying">Starting…</string>
+    <string name="state_advertising">Waiting for host</string>
+    <string name="state_connected">Connected</string>
+    <string name="state_reconnecting">Reconnecting…</string>
+    <string name="state_unavailable">Unavailable</string>
+    <string name="state_failed">Failed – tap to retry</string>
+    <string name="state_bluetooth_off">Bluetooth is off</string>
+
+    <!-- Host targets -->
+    <string name="host_target_macos">macOS</string>
+    <string name="host_target_macos_helper">⌘ Cmd is the primary modifier</string>
+    <string name="host_target_windows">Windows</string>
+    <string name="host_target_windows_helper">Ctrl is the primary modifier</string>
+    <!-- A11y labels read aloud on the host target selector (icon + name only
+         carries visual info; TalkBack users need the vendor name spoken). -->
+    <string name="host_target_a11y_macos">macOS host, tap to change</string>
+    <string name="host_target_a11y_windows">Windows host, tap to change</string>
+
+    <!-- Trademark acknowledgements shown in Settings › About. -->
+    <string name="acknowledgements_title">Acknowledgements</string>
+    <string name="acknowledgements_body">Apple, macOS, and the Apple logo are trademarks of Apple Inc., registered in the U.S. and other countries. Microsoft, Windows, and the Windows logo are trademarks of the Microsoft group of companies. Helm Pad uses these marks solely as nominative indicators of the selected host target and is not affiliated with, endorsed by, or sponsored by Apple Inc. or Microsoft Corporation.</string>
+
+    <!-- Settings → Active profile card. Shows which preset shipped with the
+         current build and signals that user-defined profiles are a planned
+         extension, not the current state. -->
+    <string name="settings_profile_section">Active profile</string>
+    <string name="settings_profile_name_label">Name</string>
+    <string name="settings_profile_origin_label">Origin</string>
+    <string name="settings_profile_origin_built_in">Built-in (ships with the APK)</string>
+    <string name="settings_profile_about_label">About</string>
+    <string name="settings_profile_about_claude_code">Eight macros tuned for Claude Code: Approve, Esc, Cycle mode, ↑, Switch model, New session, Compact, ↓.</string>
+    <string name="settings_profile_future_label">Coming later</string>
+    <string name="settings_profile_future_body">User-defined profiles (your own labels, your own keys) are planned for a later release.</string>
+
+    <!-- Settings → Re-run setup confirmation. The action only resets the
+         onboarding-complete flag; paired hosts and per-device OS choices
+         survive. We surface that explicitly because the button name sounds
+         scarier than the actual blast radius. -->
+    <string name="settings_rerun_confirm_title">Re-run the setup wizard?</string>
+    <string name="settings_rerun_confirm_body">You\'ll be sent back to the 5-step welcome flow (permissions → Bluetooth → pairing → battery → host OS). Your paired computers and per-device OS choices stay as they are; nothing gets deleted.</string>
+    <string name="settings_rerun_confirm_button">Re-run setup</string>
+
+    <!-- Settings → About card. Shows the app version so the user can quote it
+         when reporting issues. Long-press copies the full string to clipboard.
+         versionCode is in parentheses because users mostly care about the
+         semver label; the integer is there for bug-report cross-reference. -->
+    <string name="settings_about_section">About</string>
+    <string name="settings_about_version_label">Version</string>
+    <string name="settings_about_version_value">%1$s (%2$d)</string>
+    <string name="settings_about_version_value_debug">%1$s (%2$d) · debug</string>
+    <string name="settings_about_version_copied">Version copied</string>
+
+    <!-- Notification -->
+    <string name="notification_channel_name">HID link</string>
+    <string name="notification_channel_description">Keeps the Bluetooth keyboard / mouse link alive in the background.</string>
+    <string name="notification_title">Helm Pad is connected</string>
+    <string name="notification_text_connected">Connected to %1$s</string>
+    <string name="notification_text_idle">Tap to open the operator panel</string>
+    <string name="notification_action_disconnect">Disconnect</string>
+
+    <!-- Onboarding – intro -->
+    <string name="onboarding_intro_title">A Bluetooth keyboard &amp; trackpad, tuned for vibe coding</string>
+    <string name="onboarding_intro_body">Helm Pad turns your phone into a universal Bluetooth keyboard and trackpad for Mac and Windows. It ships with a Claude Code profile first — approve, interrupt, switch models — with more coding profiles coming later. Five short steps: grant a couple of permissions, pair with your computer, pick which OS you\'re on.</string>
+
+    <!-- Onboarding – progress -->
+    <string name="onboarding_step_counter">Step %1$d of %2$d</string>
+
+    <!-- Onboarding – permissions -->
+    <string name="onboarding_perm_title">Grant Bluetooth permissions</string>
+    <string name="onboarding_perm_body">Android 12+ asks apps to request Bluetooth access at runtime. We need Connect (to send key/mouse reports) and Advertise (so your computer can find the pad).</string>
+    <string name="onboarding_perm_ok">All required permissions granted.</string>
+    <string name="onboarding_perm_pending">Permissions are not granted yet.</string>
+    <string name="onboarding_perm_request">Grant permissions</string>
+
+    <!-- Onboarding – bluetooth -->
+    <string name="onboarding_bt_title">Turn on Bluetooth</string>
+    <string name="onboarding_bt_body">Bluetooth has to be on so your computer can pair with Helm Pad. If it\'s already on, tap Next.</string>
+    <string name="onboarding_bt_ok">Bluetooth is on.</string>
+    <string name="onboarding_bt_pending">Bluetooth is currently off.</string>
+    <string name="onboarding_bt_open">Open Bluetooth settings</string>
+
+    <!-- Onboarding – pairing -->
+    <string name="onboarding_pair_title">Pair with your computer</string>
+    <string name="onboarding_pair_body">Open the Bluetooth pane on your Mac or PC, then use the button below to jump to Android Settings and finish pairing. We\'ll pick up the new device automatically.</string>
+    <string name="onboarding_pair_open_settings">Open Android Bluetooth settings</string>
+    <string name="onboarding_pair_waiting">Waiting for a new paired device…</string>
+    <string name="onboarding_pair_pick">Choose the host you just paired with</string>
+
+    <!-- Onboarding – battery -->
+    <string name="onboarding_battery_title">Keep the link alive in the background</string>
+    <string name="onboarding_battery_body">Android\'s aggressive battery saver can terminate the HID link when the screen sleeps. Exempting Helm Pad keeps it running. You can skip this and come back later.</string>
+    <string name="onboarding_battery_open">Request battery exemption</string>
+
+    <!-- Onboarding – host target -->
+    <string name="onboarding_target_title">Which OS is this computer?</string>
+    <string name="onboarding_target_body">We need this so Cmd vs. Ctrl shortcuts do the right thing. You can change it later.</string>
+    <string name="onboarding_target_body_with_host">Remembering the target for \"%1$s\" so it just works next time.</string>
+
+    <!-- Onboarding – navigation -->
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_back">Back</string>
+    <string name="onboarding_finish">Done</string>
+
+    <!-- Setup / recovery banner (shown on main screen when a precondition regresses) -->
+    <string name="banner_bluetooth_off_title">Bluetooth is turned off</string>
+    <string name="banner_bluetooth_off_body">Turn it back on to reach your computer.</string>
+    <string name="banner_bluetooth_off_action">Open Bluetooth settings</string>
+    <string name="banner_permissions_missing_title">Bluetooth permissions were revoked</string>
+    <string name="banner_permissions_missing_body">Re-run the setup wizard to grant them again.</string>
+    <string name="banner_permissions_missing_action">Re-run setup</string>
+    <string name="banner_profile_invalid_title">Bundled profile is invalid</string>
+    <string name="banner_profile_invalid_body">Open diagnostics to see which slots failed validation.</string>
+    <string name="banner_profile_invalid_action">Open diagnostics</string>
+    <string name="banner_no_hid_title">This device cannot act as a HID peripheral</string>
+    <string name="banner_no_hid_body">Some manufacturers disable the BluetoothHidDevice profile. Try a different Android phone.</string>
+
+    <!-- Generic action labels shared across dialogs. -->
+    <string name="action_close">Close</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_save">Save</string>
+
+    <!-- Pairing direction callout – shown on the Paired Hosts screen and in the
+         onboarding pairing step. Explains the root cause of "my Mac doesn\'t
+         show up in the app": computers always initiate HID pairing. -->
+    <string name="pairing_direction_callout_title">Computers always initiate pairing</string>
+    <string name="pairing_direction_callout_body">Helm Pad advertises itself as a keyboard; your Mac or PC has to scan and add it from its own Bluetooth settings. If your computer isn\'t listed below, add Helm Pad from that computer\'s Bluetooth pane.</string>
+
+    <!-- Paired Hosts — Settings entry point -->
+    <string name="paired_hosts_entry_title">Paired Hosts</string>
+    <string name="paired_hosts_entry_subtitle">Rename or forget computers Helm Pad has connected to.</string>
+
+    <!-- Paired Hosts — sub-page -->
+    <string name="paired_hosts_title">Paired Hosts</string>
+    <string name="paired_hosts_active_badge">Currently connected</string>
+    <string name="paired_hosts_row_overflow">More actions</string>
+    <string name="paired_hosts_action_rename">Rename</string>
+    <string name="paired_hosts_action_forget">Forget</string>
+
+    <!-- Forget confirmation -->
+    <string name="paired_hosts_forget_title">Forget this host?</string>
+    <string name="paired_hosts_forget_body">Helm Pad will ask Android to remove the bond with %1$s. You\'ll need to pair again from that computer\'s Bluetooth settings to reconnect.</string>
+
+    <!-- Rename dialog -->
+    <string name="paired_hosts_rename_title">Rename host</string>
+    <string name="paired_hosts_rename_body">System name: %1$s. Leave blank to clear the alias.</string>
+    <string name="paired_hosts_rename_label">Local alias</string>
+
+    <!-- Paired Hosts — empty state -->
+    <string name="paired_hosts_empty_title">No paired hosts recorded yet</string>
+    <string name="paired_hosts_empty_body">Connect to a Mac or PC once and it will appear here. You can then rename it or remove it with a single tap.</string>
+
+    <!-- Paired Hosts — snackbar lines -->
+    <string name="paired_hosts_fallback_snackbar">Finish removing this host in system Bluetooth settings.</string>
+    <string name="paired_hosts_forgot_snackbar">Host forgotten.</string>
+    <string name="paired_hosts_error_snackbar">Couldn\'t open system Bluetooth settings.</string>
+
+    <!-- Model picker — opened when the Switch Model macro tile is tapped. -->
+    <string name="model_picker_title">Choose model</string>
+    <string name="model_picker_opus_title">Opus</string>
+    <string name="model_picker_opus_body">Most capable for complex reasoning</string>
+    <string name="model_picker_sonnet_title">Sonnet</string>
+    <string name="model_picker_sonnet_body">Default daily driver</string>
+    <string name="model_picker_haiku_title">Haiku</string>
+    <string name="model_picker_haiku_body">Fast and efficient</string>
+
+    <!-- appbar-consolidation: AppBar accessibility + host badge. -->
+    <string name="appbar_settings_a11y">Open Settings</string>
+    <string name="host_badge_a11y_macos">macOS host — tap for details</string>
+    <string name="host_badge_a11y_windows">Windows host — tap for details</string>
+
+    <!-- appbar-consolidation: HostStatusSheet (tap the AppBar host badge). -->
+    <string name="host_status_sheet_title">Host details</string>
+    <string name="host_status_device_alias_label">Device</string>
+    <string name="host_status_mac_suffix_label">MAC (last 4)</string>
+    <string name="host_status_os_label">Operating system</string>
+    <string name="host_status_change_os_link">Change in Settings</string>
+    <string name="host_status_last_connected_label">Last connected</string>
+    <string name="host_status_forget_button">Forget this device</string>
+    <string name="host_status_empty_title">Not connected to any host yet.</string>
+    <string name="host_status_empty_action">Open Bluetooth Settings</string>
+
+    <!-- appbar-consolidation: ProfileSectionHeader above the macro grid. -->
+    <string name="section_profile_claude_code">Claude Code</string>
+
+    <!-- appbar-consolidation: SetupRecoveryBanner — new transient states. -->
+    <string name="banner_dismiss_close">Dismiss</string>
+    <string name="state_advertising_banner_title">Waiting for your computer</string>
+    <string name="state_advertising_banner_body">Helm Pad is advertising as a keyboard. Add it from your Mac or PC\'s Bluetooth settings.</string>
+    <string name="state_reconnecting_banner_title">Reconnecting…</string>
+    <string name="state_reconnecting_banner_body">The link dropped. Hang tight while Helm Pad tries to reattach.</string>
+    <string name="state_proxying_banner_title">Starting HID link…</string>
+    <string name="state_proxying_banner_body">Registering Helm Pad with Android\'s Bluetooth stack.</string>
+    <string name="banner_failed_title">Connection failed</string>
+    <string name="banner_failed_body">Something went wrong bringing up the HID link. Re-running setup usually clears it.</string>
+    <string name="banner_failed_action">Re-run setup</string>
+
+    <!-- host-os-autodetect: Paired Hosts row → "Host OS" sub-row + picker sheet. -->
+    <string name="host_os_row_label">Host OS</string>
+    <string name="host_os_source_name">Auto-detected by device name</string>
+    <string name="host_os_source_cod">Auto-detected by device class</string>
+    <string name="host_os_source_oui">Auto-detected by vendor prefix</string>
+    <string name="host_os_source_manual">Set manually</string>
+    <string name="host_os_source_none">Unknown — no detection yet</string>
+    <string name="host_os_needs_review_badge">Needs review</string>
+    <string name="host_os_picker_title">Choose OS for \"%1$s\"</string>
+    <string name="host_os_picker_macos">macOS</string>
+    <string name="host_os_picker_windows">Windows</string>
+    <string name="host_os_picker_auto">Use auto-detected</string>
+    <string name="host_os_picker_auto_suffix_macos">(macOS)</string>
+    <string name="host_os_picker_auto_suffix_windows">(Windows)</string>
+    <string name="host_os_picker_auto_suffix_unknown">(Unknown — no detection yet)</string>
+    <string name="host_os_redetect">Re-detect OS</string>
+    <string name="host_os_redetect_pending">Unknown — waiting for next connection</string>
+</resources>

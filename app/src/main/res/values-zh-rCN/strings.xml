@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Helm Pad</string>
+    <string name="app_tagline_line1">Helm Pad</string>
+    <string name="app_tagline_line2">vibe coding 蓝牙键鼠</string>
+
+    <!-- 连接状态 -->
+    <string name="state_idle">未启动</string>
+    <string name="state_proxying">正在启动…</string>
+    <string name="state_advertising">等待主机连接</string>
+    <string name="state_connected">已连接</string>
+    <string name="state_reconnecting">正在重连…</string>
+    <string name="state_unavailable">当前不可用</string>
+    <string name="state_failed">连接失败 – 点击重试</string>
+    <string name="state_bluetooth_off">蓝牙已关闭</string>
+
+    <!-- 主机目标 -->
+    <string name="host_target_macos">macOS</string>
+    <string name="host_target_macos_helper">主修饰键为 ⌘ Cmd</string>
+    <string name="host_target_windows">Windows</string>
+    <string name="host_target_windows_helper">主修饰键为 Ctrl</string>
+    <string name="host_target_a11y_macos">macOS 主机，点击切换</string>
+    <string name="host_target_a11y_windows">Windows 主机，点击切换</string>
+
+    <!-- 商标声明：设置 › 关于 中展示 -->
+    <string name="acknowledgements_title">商标声明</string>
+    <string name="acknowledgements_body">Apple、macOS 及 Apple 标识为 Apple Inc. 在美国及其他国家或地区注册的商标。Microsoft、Windows 及 Windows 标识为 Microsoft 公司集团的商标。Helm Pad 仅将上述标识用作对所选主机目标的指示性说明，与 Apple Inc. 及 Microsoft Corporation 不存在任何附属、背书或赞助关系。</string>
+
+    <!-- 设置 → 当前 profile 卡片。说明这一版内置的是哪个预设，并提示
+         自定义 profile 是规划中的扩展，不是当前能力。 -->
+    <string name="settings_profile_section">当前 profile</string>
+    <string name="settings_profile_name_label">名称</string>
+    <string name="settings_profile_origin_label">来源</string>
+    <string name="settings_profile_origin_built_in">内置（随 APK 一起发布）</string>
+    <string name="settings_profile_about_label">说明</string>
+    <string name="settings_profile_about_claude_code">为 Claude Code 调校的 8 个宏：Approve、Esc、Cycle mode、↑、Switch model、New session、Compact、↓。</string>
+    <string name="settings_profile_future_label">后续</string>
+    <string name="settings_profile_future_body">自定义 profile（自己定标签、自己定按键）会在后续版本支持。</string>
+
+    <!-- 设置 → 重跑向导的确认弹窗。该动作只是把"引导已完成"标记重置，
+         已配对主机、每台设备的目标系统都不会被清。这里把范围说清楚，
+         避免按钮名让人误以为会清数据。 -->
+    <string name="settings_rerun_confirm_title">重新走一遍向导？</string>
+    <string name="settings_rerun_confirm_body">会回到 5 步欢迎流程（权限 → 蓝牙 → 配对 → 电量 → 主机系统）。已配对的电脑和每台设备的系统选择都会保留，不会被删除。</string>
+    <string name="settings_rerun_confirm_button">重跑向导</string>
+
+    <!-- 设置 → 关于卡片。展示当前应用版本，便于上报问题时提供。
+         长按可复制完整版本字符串。括号内是 versionCode，用于精准定位。 -->
+    <string name="settings_about_section">关于</string>
+    <string name="settings_about_version_label">版本</string>
+    <string name="settings_about_version_value">%1$s（%2$d）</string>
+    <string name="settings_about_version_value_debug">%1$s（%2$d）· debug</string>
+    <string name="settings_about_version_copied">版本号已复制</string>
+
+    <!-- 通知 -->
+    <string name="notification_channel_name">HID 连接</string>
+    <string name="notification_channel_description">在后台保持蓝牙键盘 / 鼠标连接。</string>
+    <string name="notification_title">Helm Pad 已连接</string>
+    <string name="notification_text_connected">已连接到 %1$s</string>
+    <string name="notification_text_idle">点击打开操作面板</string>
+    <string name="notification_action_disconnect">断开连接</string>
+
+    <!-- 向导 – 介绍 -->
+    <string name="onboarding_intro_title">为 vibe coding 定制的蓝牙键鼠</string>
+    <string name="onboarding_intro_body">Helm Pad 把手机变成通用蓝牙键盘 + 触控板，兼顾 Mac 与 Windows。首发内置 Claude Code profile——批准、中断、切模型都在手边；后续会加入更多编码场景的 profile。接下来 5 步授权、配对、选目标系统，就能开始用了。</string>
+
+    <!-- 向导 – 进度 -->
+    <string name="onboarding_step_counter">第 %1$d 步 / 共 %2$d 步</string>
+
+    <!-- 向导 – 权限 -->
+    <string name="onboarding_perm_title">授予蓝牙权限</string>
+    <string name="onboarding_perm_body">Android 12 及以上需要运行时授予蓝牙权限：Connect 用于发送键鼠事件，Advertise 让电脑能发现它。</string>
+    <string name="onboarding_perm_ok">所需权限已全部授予。</string>
+    <string name="onboarding_perm_pending">还有未授予的权限。</string>
+    <string name="onboarding_perm_request">授予权限</string>
+
+    <!-- 向导 – 蓝牙 -->
+    <string name="onboarding_bt_title">打开蓝牙</string>
+    <string name="onboarding_bt_body">配对前需要打开手机蓝牙。如果已经是开的，直接点下一步。</string>
+    <string name="onboarding_bt_ok">蓝牙已打开。</string>
+    <string name="onboarding_bt_pending">蓝牙当前是关闭的。</string>
+    <string name="onboarding_bt_open">打开蓝牙设置</string>
+
+    <!-- 向导 – 配对 -->
+    <string name="onboarding_pair_title">和电脑配对</string>
+    <string name="onboarding_pair_body">在 Mac 或 PC 的蓝牙面板上添加设备，然后用下方按钮跳到 Android 蓝牙设置完成配对。完成后会自动识别。</string>
+    <string name="onboarding_pair_open_settings">打开 Android 蓝牙设置</string>
+    <string name="onboarding_pair_waiting">等待新配对设备出现…</string>
+    <string name="onboarding_pair_pick">选中刚才配对的电脑</string>
+
+    <!-- 向导 – 电量 -->
+    <string name="onboarding_battery_title">让后台连接保持存活</string>
+    <string name="onboarding_battery_body">Android 激进的省电机制会在屏幕休眠后杀掉 HID 连接。把 Helm Pad 加入电量优化白名单能让它持续运行。这一步可以跳过，之后也能重新开启。</string>
+    <string name="onboarding_battery_open">跳转到电量优化设置</string>
+
+    <!-- 向导 – 主机目标 -->
+    <string name="onboarding_target_title">这台电脑是什么系统？</string>
+    <string name="onboarding_target_body">选对之后，Cmd / Ctrl 等快捷键才能正确映射。之后可以在设置里改。</string>
+    <string name="onboarding_target_body_with_host">记住 \"%1$s\" 的目标系统，下次连接会自动套用。</string>
+
+    <!-- 向导 – 导航按钮 -->
+    <string name="onboarding_next">下一步</string>
+    <string name="onboarding_back">返回</string>
+    <string name="onboarding_finish">完成</string>
+
+    <!-- 主屏恢复横幅（前置条件在使用过程中回退时出现） -->
+    <string name="banner_bluetooth_off_title">蓝牙已关闭</string>
+    <string name="banner_bluetooth_off_body">打开蓝牙，才能连上电脑。</string>
+    <string name="banner_bluetooth_off_action">打开蓝牙设置</string>
+    <string name="banner_permissions_missing_title">蓝牙权限已被撤销</string>
+    <string name="banner_permissions_missing_body">重跑向导以重新授予权限。</string>
+    <string name="banner_permissions_missing_action">重跑向导</string>
+    <string name="banner_profile_invalid_title">内置 profile 校验失败</string>
+    <string name="banner_profile_invalid_body">打开诊断页查看是哪些槽位有问题。</string>
+    <string name="banner_profile_invalid_action">打开诊断</string>
+    <string name="banner_no_hid_title">本机不支持 HID 外设模式</string>
+    <string name="banner_no_hid_body">部分厂商禁用了 BluetoothHidDevice；请更换手机再试。</string>
+
+    <!-- 对话框通用按钮 -->
+    <string name="action_close">关闭</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_save">保存</string>
+
+    <!-- 配对方向提示：Paired Hosts 页与向导的配对步骤共用。核心信息是 -->
+    <!-- "电脑才是发起方"，消灭"app 里搜不到我的 Mac"这类困惑。 -->
+    <string name="pairing_direction_callout_title">配对永远从电脑发起</string>
+    <string name="pairing_direction_callout_body">Helm Pad 只负责把自己广播成键盘；Mac 或 PC 要自行扫描并在它自己的蓝牙设置里添加它。下方没有你的电脑？请到那台电脑的蓝牙面板里添加 Helm Pad。</string>
+
+    <!-- Paired Hosts — 设置入口 -->
+    <string name="paired_hosts_entry_title">已配对主机</string>
+    <string name="paired_hosts_entry_subtitle">管理 Helm Pad 连过的电脑，可重命名或移除。</string>
+
+    <!-- Paired Hosts — 子页 -->
+    <string name="paired_hosts_title">已配对主机</string>
+    <string name="paired_hosts_active_badge">当前已连接</string>
+    <string name="paired_hosts_row_overflow">更多操作</string>
+    <string name="paired_hosts_action_rename">重命名</string>
+    <string name="paired_hosts_action_forget">移除</string>
+
+    <!-- Forget 确认 -->
+    <string name="paired_hosts_forget_title">移除此主机？</string>
+    <string name="paired_hosts_forget_body">Helm Pad 会请求 Android 解除与 %1$s 的配对。之后要从那台电脑的蓝牙设置里重新添加才能再连上。</string>
+
+    <!-- Rename 对话框 -->
+    <string name="paired_hosts_rename_title">重命名主机</string>
+    <string name="paired_hosts_rename_body">系统名：%1$s。留空即清除自定义名称。</string>
+    <string name="paired_hosts_rename_label">本地别名</string>
+
+    <!-- Paired Hosts — 空状态 -->
+    <string name="paired_hosts_empty_title">还没有记录到已配对主机</string>
+    <string name="paired_hosts_empty_body">成功连接一次 Mac 或 PC 后，它会出现在这里，你就能一键重命名或移除了。</string>
+
+    <!-- Paired Hosts — Snackbar -->
+    <string name="paired_hosts_fallback_snackbar">请到系统蓝牙设置里完成移除。</string>
+    <string name="paired_hosts_forgot_snackbar">已移除该主机。</string>
+    <string name="paired_hosts_error_snackbar">无法打开系统蓝牙设置。</string>
+
+    <!-- 模型选择器：Switch Model 槽位被点时弹出 -->
+    <string name="model_picker_title">选择模型</string>
+    <string name="model_picker_opus_title">Opus</string>
+    <string name="model_picker_opus_body">复杂推理最强</string>
+    <string name="model_picker_sonnet_title">Sonnet</string>
+    <string name="model_picker_sonnet_body">日常默认款</string>
+    <string name="model_picker_haiku_title">Haiku</string>
+    <string name="model_picker_haiku_body">快速、轻量</string>
+
+    <!-- appbar-consolidation: AppBar 可访问性 + 主机徽章 -->
+    <string name="appbar_settings_a11y">打开设置</string>
+    <string name="host_badge_a11y_macos">macOS 主机 — 点击查看详情</string>
+    <string name="host_badge_a11y_windows">Windows 主机 — 点击查看详情</string>
+
+    <!-- appbar-consolidation: HostStatusSheet（点击 AppBar 的主机徽章弹出） -->
+    <string name="host_status_sheet_title">主机详情</string>
+    <string name="host_status_device_alias_label">设备名</string>
+    <string name="host_status_mac_suffix_label">MAC（末 4 位）</string>
+    <string name="host_status_os_label">操作系统</string>
+    <string name="host_status_change_os_link">到设置里切换</string>
+    <string name="host_status_last_connected_label">上次连接</string>
+    <string name="host_status_forget_button">遗忘此设备</string>
+    <string name="host_status_empty_title">还没有连接任何主机。</string>
+    <string name="host_status_empty_action">打开蓝牙设置</string>
+
+    <!-- appbar-consolidation: ProfileSectionHeader 位于宏区上方 -->
+    <string name="section_profile_claude_code">Claude Code</string>
+
+    <!-- appbar-consolidation: SetupRecoveryBanner — 新增瞬时态 -->
+    <string name="banner_dismiss_close">关闭</string>
+    <string name="state_advertising_banner_title">等待电脑连接</string>
+    <string name="state_advertising_banner_body">Helm Pad 正广播为键盘，请在 Mac 或 PC 的蓝牙设置里添加它。</string>
+    <string name="state_reconnecting_banner_title">重连中…</string>
+    <string name="state_reconnecting_banner_body">连接中断，Helm Pad 正在尝试重连。</string>
+    <string name="state_proxying_banner_title">正在启动 HID 链路…</string>
+    <string name="state_proxying_banner_body">正在把 Helm Pad 注册进 Android 蓝牙协议栈。</string>
+    <string name="banner_failed_title">连接失败</string>
+    <string name="banner_failed_body">HID 链路启动时遇到问题，重跑向导通常可以恢复。</string>
+    <string name="banner_failed_action">重跑向导</string>
+
+    <!-- host-os-autodetect: Paired Hosts row → "Host OS" 子行 + 选择器 -->
+    <string name="host_os_row_label">主机系统</string>
+    <string name="host_os_source_name">按设备名识别</string>
+    <string name="host_os_source_cod">按设备类别识别</string>
+    <string name="host_os_source_oui">按厂商识别</string>
+    <string name="host_os_source_manual">手动设置</string>
+    <string name="host_os_source_none">未识别 — 尚未自动判定</string>
+    <string name="host_os_needs_review_badge">待确认</string>
+    <string name="host_os_picker_title">为 \"%1$s\" 选择系统</string>
+    <string name="host_os_picker_macos">macOS</string>
+    <string name="host_os_picker_windows">Windows</string>
+    <string name="host_os_picker_auto">使用自动识别结果</string>
+    <string name="host_os_picker_auto_suffix_macos">（macOS）</string>
+    <string name="host_os_picker_auto_suffix_windows">（Windows）</string>
+    <string name="host_os_picker_auto_suffix_unknown">（未识别 — 尚未自动判定）</string>
+    <string name="host_os_redetect">重新识别系统</string>
+    <string name="host_os_redetect_pending">未识别 — 等待下次连接</string>
+</resources>

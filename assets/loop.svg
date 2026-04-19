@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 320" width="100%" role="img" aria-label="Before and after comparison">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFBF5"/>
+      <stop offset="100%" stop-color="#FDF1E0"/>
+    </linearGradient>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#C97A2F"/>
+    </marker>
+    <marker id="arrLight" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4FA162"/>
+    </marker>
+    <filter id="soft2" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feOffset dx="0" dy="2"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.14"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="880" height="320" fill="url(#bg2)"/>
+
+  <!-- BEFORE -->
+  <g transform="translate(0,20)">
+    <g transform="translate(32,0)">
+      <rect x="0" y="0" width="140" height="28" rx="14" fill="#F5DFC3" stroke="#E9B98A"/>
+      <text x="70" y="18" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="12" font-weight="700" fill="#7A4A1F">without Helm Pad</text>
+    </g>
+
+    <g transform="translate(32,54)" filter="url(#soft2)">
+      <rect x="0" y="0" width="132" height="74" rx="14" fill="#FFFFFF" stroke="#E9D0AF"/>
+      <text x="66" y="30" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="12" font-weight="600" fill="#3D2A1B">Agent pauses</text>
+      <text x="66" y="52" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="10" fill="#9E7B53">&quot;Run ./gradlew test ?&quot;</text>
+
+      <rect x="172" y="0" width="132" height="74" rx="14" fill="#FFFFFF" stroke="#E9D0AF"/>
+      <text x="238" y="30" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="12" font-weight="600" fill="#3D2A1B">Hand off the code</text>
+      <text x="238" y="52" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="10" fill="#9E7B53">reach &#xB7; eyes follow</text>
+
+      <rect x="344" y="0" width="132" height="74" rx="14" fill="#FFFFFF" stroke="#E9D0AF"/>
+      <text x="410" y="30" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="12" font-weight="600" fill="#3D2A1B">Hunt for Enter</text>
+      <text x="410" y="52" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="10" fill="#9E7B53">approve &#xB7; find your place again</text>
+
+      <rect x="516" y="0" width="180" height="74" rx="14" fill="#FDE8E2" stroke="#F1B4A7"/>
+      <text x="606" y="30" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="12" font-weight="700" fill="#7A2E22">Tied to the keyboard</text>
+      <text x="606" y="52" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="10" fill="#8A3F2E">hands busy &#xB7; rhythm broken</text>
+    </g>
+
+    <g stroke="#C97A2F" stroke-width="2" fill="none">
+      <path d="M 164 91 L 200 91" marker-end="url(#arr)"/>
+      <path d="M 336 91 L 372 91" marker-end="url(#arr)"/>
+      <path d="M 508 91 L 544 91" marker-end="url(#arr)"/>
+    </g>
+  </g>
+
+  <line x1="32" y1="176" x2="848" y2="176" stroke="#E8CFA8" stroke-dasharray="3 4"/>
+
+  <!-- AFTER -->
+  <g transform="translate(0,188)">
+    <g transform="translate(32,0)">
+      <rect x="0" y="0" width="140" height="28" rx="14" fill="#D3EED7" stroke="#7FC98A"/>
+      <text x="70" y="18" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="12" font-weight="700" fill="#1F5A2C">with Helm Pad</text>
+    </g>
+
+    <g transform="translate(32,44)" filter="url(#soft2)">
+      <rect x="0" y="0" width="132" height="74" rx="14" fill="#FFFFFF" stroke="#CFE8D4"/>
+      <text x="66" y="30" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="12" font-weight="600" fill="#1F3C24">Agent pauses</text>
+      <text x="66" y="52" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="10" fill="#5C7A66">&quot;Run ./gradlew test ?&quot;</text>
+
+      <rect x="172" y="0" width="132" height="74" rx="14" fill="#FFFFFF" stroke="#CFE8D4"/>
+      <text x="238" y="30" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="12" font-weight="600" fill="#1F3C24">One tap</text>
+      <text x="238" y="52" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="10" fill="#5C7A66">thumb on pad &#xB7; eyes on code</text>
+
+      <rect x="344" y="0" width="132" height="74" rx="14" fill="#FFFFFF" stroke="#CFE8D4"/>
+      <text x="410" y="30" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="12" font-weight="600" fill="#1F3C24">Stay in flow</text>
+      <text x="410" y="52" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="10" fill="#5C7A66">keep reading, keep thinking</text>
+
+      <rect x="516" y="0" width="180" height="74" rx="14" fill="#DEF3E2" stroke="#7FC98A"/>
+      <text x="606" y="30" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="12" font-weight="700" fill="#1F5A2C">Hands free, mind free</text>
+      <text x="606" y="52" text-anchor="middle" font-family="ui-sans-serif,-apple-system,Segoe UI,Helvetica,Arial" font-size="10" fill="#2F6E3B">steer the AI from arm&#x2019;s length</text>
+    </g>
+
+    <g stroke="#4FA162" stroke-width="2" fill="none">
+      <path d="M 164 81 L 200 81" marker-end="url(#arrLight)"/>
+      <path d="M 336 81 L 372 81" marker-end="url(#arrLight)"/>
+      <path d="M 508 81 L 544 81" marker-end="url(#arrLight)"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Self-drawn glyph, not an Anthropic brand asset. See NOTICE.md.
+  Shape: a rounded terminal frame with a left-aligned prompt caret and a
+  horizontal text line — evokes "Claude Code" (terminal + assistant) without
+  copying any real Anthropic trademarks. Tinted by the caller (typically
+  `onSurfaceVariant`).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Terminal frame: rounded 20×14 rectangle -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M4,6 L20,6 A2,2 0 0 1 22,8 L22,18 A2,2 0 0 1 20,20 L4,20 A2,2 0 0 1 2,18 L2,8 A2,2 0 0 1 4,6 Z" />
+    <!-- Prompt caret: ">" -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M6,11 L9,13 L6,15" />
+    <!-- Text line next to the caret -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M12,15 L18,15" />
+</vector>

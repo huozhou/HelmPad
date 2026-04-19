@@ -1,18 +1,12 @@
 name: Release
 
-# Triggers:
-#   - push a tag like `v0.1.0` to cut a release
-#   - workflow_dispatch: trigger manually from the Actions tab (no release created)
 on:
-  push:
-    tags:
-      - "v*"
   release:
-    types: published
+    types: [published]
   workflow_dispatch:
 
 permissions:
-  contents: write   # needed for the GitHub Release step
+  contents: write
 
 jobs:
   build:
@@ -36,10 +30,9 @@ jobs:
       - name: Resolve version
         id: version
         run: |
-          # Tag pushes  → strip leading "v"  → semver versionName (e.g. v0.1.0 → 0.1.0)
-          # Manual runs → "0.0.1-dev" sentinel so assembleRelease still succeeds
-          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
-            VERSION_NAME="${GITHUB_REF#refs/tags/v}"
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            VERSION_NAME="${{ github.event.release.tag_name }}"
+            VERSION_NAME="${VERSION_NAME#v}"
           else
             VERSION_NAME="0.0.1-dev"
           fi
@@ -61,12 +54,14 @@ jobs:
       - name: Run unit tests
         run: ./gradlew :app:testReleaseUnitTest -PversionName=${{ steps.version.outputs.name }} --no-daemon
 
-      - name: Assemble release APK + AAB
+      - name: Assemble release APK
         env:
           RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           RELEASE_KEY_ALIAS:      ${{ secrets.ANDROID_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD:   ${{ secrets.ANDROID_KEY_PASSWORD }}
-        run: ./gradlew :app:assembleRelease :app:bundleRelease -PversionName=${{ steps.version.outputs.name }} --no-daemon
+        run: ./gradlew :app:assembleRelease -PversionName=${{ steps.version.outputs.name }} --no-daemon
+        # build aab
+        # run: ./gradlew :app:assembleRelease :app:bundleRelease -PversionName=${{ steps.version.outputs.name }} --no-daemon
 
       - name: Wipe keystore from runner
         if: always()
@@ -78,16 +73,15 @@ jobs:
           name: helm-pad-release
           path: |
             app/build/outputs/apk/release/*.apk
-            app/build/outputs/bundle/release/*.aab
+            # app/build/outputs/bundle/release/*.aab
           if-no-files-found: error
           retention-days: 30
 
-      - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Upload to Release
+        if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
-          fail_on_unmatched_files: true
+          tag_name: ${{ github.event.release.tag_name }}
           files: |
             app/build/outputs/apk/release/*.apk
-            app/build/outputs/bundle/release/*.aab
+            # app/build/outputs/bundle/release/*.aab

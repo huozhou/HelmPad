@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Self-drawn glyph, not an OpenAI brand asset. See NOTICE.md.
+  Shape: a rounded terminal frame with an angle-bracket caret and a
+  diagonal slash — evokes "Codex" (terminal + generative coding)
+  without copying any real OpenAI trademarks. Tinted by the caller
+  (typically `onSurfaceVariant`).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Terminal frame: rounded 20×14 rectangle -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M4,6 L20,6 A2,2 0 0 1 22,8 L22,18 A2,2 0 0 1 20,20 L4,20 A2,2 0 0 1 2,18 L2,8 A2,2 0 0 1 4,6 Z" />
+    <!-- Caret: "<" pointing left -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M9,11 L6,13 L9,15" />
+    <!-- Slash on the text line -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M18,11 L12,15" />
+</vector>

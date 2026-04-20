@@ -58,6 +58,47 @@ class OnboardingStateTest {
     }
 
     @Test
+    fun profile_step_is_advanceable_with_default_selection() {
+        // Cold-start default seeds selectedProfileId with Claude Code so the
+        // Finish button is enabled without the user having to do anything.
+        val s = OnboardingState(
+            step = OnboardingStep.PROFILE,
+            permissionsGranted = true,
+            bluetoothEnabled = true,
+            selectedHost = host,
+            selectedHostTarget = HostTarget.MACOS,
+        )
+        assertEquals("profile.claude-code", s.selectedProfileId)
+        assertTrue(s.canAdvance)
+    }
+
+    @Test
+    fun profile_step_blocks_advance_when_selection_cleared() {
+        val s = OnboardingState(
+            step = OnboardingStep.PROFILE,
+            permissionsGranted = true,
+            bluetoothEnabled = true,
+            selectedHost = host,
+            selectedHostTarget = HostTarget.MACOS,
+            selectedProfileId = null,
+        )
+        assertFalse(s.canAdvance)
+    }
+
+    @Test
+    fun first_incomplete_is_profile_until_profile_step_completed() {
+        val beforeProfile = OnboardingState(
+            permissionsGranted = true,
+            bluetoothEnabled = true,
+            selectedHost = host,
+            selectedHostTarget = HostTarget.MACOS,
+        )
+        val afterProfile = beforeProfile.copy(profileStepCompleted = true)
+        assertEquals(OnboardingStep.PROFILE, beforeProfile.firstIncompleteStep())
+        assertEquals(OnboardingStep.DONE, afterProfile.firstIncompleteStep())
+    }
+
+    @Test
     fun all_complete_means_is_complete_is_true() {
         val s = OnboardingState(
             step = OnboardingStep.DONE,
@@ -65,6 +106,7 @@ class OnboardingStateTest {
             bluetoothEnabled = true,
             selectedHost = host,
             selectedHostTarget = HostTarget.WINDOWS,
+            profileStepCompleted = true,
         )
         assertTrue(s.isComplete)
         assertEquals(OnboardingStep.DONE, s.firstIncompleteStep())
@@ -104,6 +146,17 @@ class OnboardingStateTest {
     }
 
     @Test
+    fun resumeStep_targetButNoProfileYet_landsOnProfile() {
+        val s = OnboardingState(
+            permissionsGranted = true,
+            bluetoothEnabled = true,
+            selectedHost = host,
+            selectedHostTarget = HostTarget.MACOS,
+        )
+        assertEquals(OnboardingStep.PROFILE, s.resumeStep())
+    }
+
+    @Test
     fun resumeStep_neverPersistsAStep_recomputesFromEnvironment() {
         // Same fully-complete env should always produce DONE, regardless of the
         // OnboardingState.step value the caller happened to stash. This proves
@@ -114,6 +167,7 @@ class OnboardingStateTest {
             bluetoothEnabled = true,
             selectedHost = host,
             selectedHostTarget = HostTarget.MACOS,
+            profileStepCompleted = true,
         )
         assertEquals(OnboardingStep.DONE, complete.resumeStep())
     }

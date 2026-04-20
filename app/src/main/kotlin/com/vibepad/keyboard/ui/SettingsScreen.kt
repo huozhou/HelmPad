@@ -82,6 +82,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SettingsScreen(
     app: VibePadApplication,
+    profiles: List<Profile>,
     activeProfile: Profile,
     onClose: () -> Unit,
     onResetOnboarding: () -> Unit,
@@ -131,14 +132,24 @@ fun SettingsScreen(
             }
 
             SectionHeader(stringResource(R.string.settings_profile_section))
-            InfoCard {
-                KeyValue(stringResource(R.string.settings_profile_name_label), activeProfile.name)
-                HorizontalDivider()
-                KeyValue(
-                    stringResource(R.string.settings_profile_origin_label),
-                    stringResource(R.string.settings_profile_origin_built_in),
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                ),
+            ) {
+                ProfileDropdown(
+                    profiles = profiles,
+                    activeProfileId = activeProfile.id,
+                    onSelect = { id ->
+                        if (id != activeProfile.id) {
+                            scope.launch { app.selectionsStore.setProfileId(id) }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
                 )
-                HorizontalDivider()
+            }
+            InfoCard {
                 KeyValue(
                     stringResource(R.string.settings_profile_about_label),
                     profileAboutText(activeProfile),
@@ -262,6 +273,8 @@ private fun KeyValue(key: String, value: String) {
 @Composable
 private fun profileAboutText(profile: Profile): String = when (profile.id) {
     "profile.claude-code" -> stringResource(R.string.settings_profile_about_claude_code)
+    "profile.codex" -> stringResource(R.string.settings_profile_about_codex)
+    "profile.cursor" -> stringResource(R.string.settings_profile_about_cursor)
     else -> "${profile.slots.size} macros."
 }
 

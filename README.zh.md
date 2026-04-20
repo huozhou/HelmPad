@@ -26,7 +26,7 @@
 
 对 Mac(或 Windows)来说,这部手机就是一只标准蓝牙键盘加鼠标——电脑端不用装伴侣 app、不用装驱动、不用走任何权限弹窗。在手机这边:
 
-- 八个宏分两排:**Approve · Esc · Cycle mode · ↑** 和 **Switch model · New session · Compact · ↓**。是我跑 agent 循环里最常按的那几个。
+- 八个宏分两排,按你主用的 agent 有三套 profile:**Claude Code**、**Codex**、**Cursor**。每套 profile 在 CLI(`codex`、`cursor-agent`)和 GUI(Codex 桌面版、Cursor / VS Code 聊天面板)下都通用。Approve / Esc / Switch model / New session 在三套里的位置一致;中间两格各自按 agent 的实际常用命令调了(Cycle mode、`/approvals`、`/diff` 等)。
 - 剩下的整片屏幕是一只真正的触控板——单指移动+点击、双指滚动、双指点击 = 右键、长按拖动。
 - 自动识别手机连的是 Mac 还是 Windows,自动用对应的修饰键(Cmd / Ctrl)。同一部手机在两套机器之间换,我不必动手切。
 
@@ -42,7 +42,7 @@
 
 1. 在 Releases 下最新 APK 装上。
 2. 在电脑蓝牙设置里像配普通键盘一样把手机配对进去。
-3. 打开 Helm Pad,跟着首次启动的引导走一遍。
+3. 打开 Helm Pad,跟着首次启动的引导走一遍。最后一步会让你挑主用的 CLI——默认预选 Claude Code,只用 Claude 的用户直接 Next 即可;以后随时能在 设置 → 当前 profile 里切。
 
 装在你日常在用的主力手机上没问题;不想跟个人使用混在一起的话,装在一台单独留在桌上的备用手机上也行。电脑端不必装任何东西。
 

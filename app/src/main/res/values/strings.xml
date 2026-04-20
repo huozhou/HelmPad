@@ -28,15 +28,19 @@
     <string name="acknowledgements_title">Acknowledgements</string>
     <string name="acknowledgements_body">Apple, macOS, and the Apple logo are trademarks of Apple Inc., registered in the U.S. and other countries. Microsoft, Windows, and the Windows logo are trademarks of the Microsoft group of companies. Helm Pad uses these marks solely as nominative indicators of the selected host target and is not affiliated with, endorsed by, or sponsored by Apple Inc. or Microsoft Corporation.</string>
 
-    <!-- Settings → Active profile card. Shows which preset shipped with the
-         current build and signals that user-defined profiles are a planned
-         extension, not the current state. -->
+    <!-- Settings → Active profile. Dropdown row (leading icon + current name +
+         chevron) that expands a DropdownMenu listing every bundled profile,
+         with a check-mark trailing icon on the current selection. Switching
+         is a cheap, reversible action; per-profile narrative copy below the
+         dropdown gives a one-line "what each profile is tuned for". -->
     <string name="settings_profile_section">Active profile</string>
-    <string name="settings_profile_name_label">Name</string>
-    <string name="settings_profile_origin_label">Origin</string>
-    <string name="settings_profile_origin_built_in">Built-in (ships with the APK)</string>
+    <string name="settings_profile_dropdown_supporting">Tap to switch. Changes apply immediately; your paired computers stay as they are.</string>
+    <string name="settings_profile_dropdown_row_cd">Active profile: %1$s. Tap to choose a different profile.</string>
+    <string name="settings_profile_dropdown_selected_cd">Currently selected</string>
     <string name="settings_profile_about_label">About</string>
     <string name="settings_profile_about_claude_code">Eight macros tuned for Claude Code: Approve, Esc, Cycle mode, ↑, Switch model, New session, Compact, ↓.</string>
+    <string name="settings_profile_about_codex">Eight macros tuned for OpenAI Codex (works with the `codex` CLI and the Codex app): Approve, Esc, Cycle approvals, ↑, Switch model, New session, Compact, ↓.</string>
+    <string name="settings_profile_about_cursor">Eight macros tuned for Cursor (works with `cursor-agent` and the Cursor / VS Code chat panel): Approve, Esc, Cycle mode, ↑, Switch model (Cmd+/ · Ctrl+/), New session, Diff, ↓.</string>
     <string name="settings_profile_future_label">Coming later</string>
     <string name="settings_profile_future_body">User-defined profiles (your own labels, your own keys) are planned for a later release.</string>
 
@@ -45,7 +49,7 @@
          survive. We surface that explicitly because the button name sounds
          scarier than the actual blast radius. -->
     <string name="settings_rerun_confirm_title">Re-run the setup wizard?</string>
-    <string name="settings_rerun_confirm_body">You\'ll be sent back to the 5-step welcome flow (permissions → Bluetooth → pairing → battery → host OS). Your paired computers and per-device OS choices stay as they are; nothing gets deleted.</string>
+    <string name="settings_rerun_confirm_body">You\'ll be sent back to the 6-step welcome flow (permissions → Bluetooth → pairing → battery → host OS → default agent). Your paired computers and per-device OS choices stay as they are; nothing gets deleted.</string>
     <string name="settings_rerun_confirm_button">Re-run setup</string>
 
     <!-- Settings → About card. Shows the app version so the user can quote it
@@ -68,7 +72,7 @@
 
     <!-- Onboarding – intro -->
     <string name="onboarding_intro_title">A Bluetooth keyboard &amp; trackpad, tuned for vibe coding</string>
-    <string name="onboarding_intro_body">Helm Pad turns your phone into a universal Bluetooth keyboard and trackpad for Mac and Windows. It ships with a Claude Code profile first — approve, interrupt, switch models — with more coding profiles coming later. Five short steps: grant a couple of permissions, pair with your computer, pick which OS you\'re on.</string>
+    <string name="onboarding_intro_body">Helm Pad turns your phone into a universal Bluetooth keyboard and trackpad for Mac and Windows. It ships with Claude Code, Codex, and Cursor profiles — approve, interrupt, switch models — and you pick your default at the end of setup. The profiles work the same whether you drive the CLI (`codex`, `cursor-agent`) or the app / VS Code chat. Six short steps: grant a couple of permissions, pair with your computer, pick which OS you\'re on, choose your default agent.</string>
 
     <!-- Onboarding – progress -->
     <string name="onboarding_step_counter">Step %1$d of %2$d</string>
@@ -103,6 +107,15 @@
     <string name="onboarding_target_title">Which OS is this computer?</string>
     <string name="onboarding_target_body">We need this so Cmd vs. Ctrl shortcuts do the right thing. You can change it later.</string>
     <string name="onboarding_target_body_with_host">Remembering the target for \"%1$s\" so it just works next time.</string>
+
+    <!-- Onboarding – profile. Optional-feeling step: default is Claude Code so
+         users who only use Claude can tap Finish immediately; the dropdown
+         lets Codex / Cursor users pick their daily driver before the first
+         press. Footnote makes the reversibility explicit. -->
+    <string name="onboarding_profile_title">Pick your default agent</string>
+    <string name="onboarding_profile_body">Helm Pad ships with a handful of coding-agent profiles. The one you pick here is what the macro grid shows when you open the operator screen.</string>
+    <string name="onboarding_profile_loading">Loading profiles…</string>
+    <string name="onboarding_profile_footnote">You can change this any time in Settings → Active profile.</string>
 
     <!-- Onboarding – navigation -->
     <string name="onboarding_next">Next</string>
@@ -186,9 +199,6 @@
     <string name="host_status_forget_button">Forget this device</string>
     <string name="host_status_empty_title">Not connected to any host yet.</string>
     <string name="host_status_empty_action">Open Bluetooth Settings</string>
-
-    <!-- appbar-consolidation: ProfileSectionHeader above the macro grid. -->
-    <string name="section_profile_claude_code">Claude Code</string>
 
     <!-- appbar-consolidation: SetupRecoveryBanner — new transient states. -->
     <string name="banner_dismiss_close">Dismiss</string>

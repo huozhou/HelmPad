@@ -118,7 +118,15 @@ class OperatorViewModel(
     }
 
     fun fireMacro(slotId: String) {
-        if (slotId == SLOT_SWITCH_MODEL) {
+        // ModelPickerSheet is Claude-only (see `add-codex-cursor-profiles`
+        // design decision 3). Codex and Cursor handle model switching
+        // themselves — for those, tapping switch_model just forwards the
+        // slot's JSON-declared action: Codex uses `Literal("/model\n")`
+        // (drops into its TUI `/model` menu), Cursor uses
+        // `Chord(PRIMARY, SLASH)` (Cmd+/ on macOS, Ctrl+/ on Windows) so
+        // the same button works in `cursor-agent` and in the Cursor /
+        // VS Code chat panel.
+        if (slotId == SLOT_SWITCH_MODEL && profile.id == CLAUDE_PROFILE_ID) {
             _showModelPicker.value = true
             return
         }
@@ -173,6 +181,13 @@ class OperatorViewModel(
     companion object {
         /** Slot id that opens [ModelPickerSheet] instead of firing its JSON action. */
         const val SLOT_SWITCH_MODEL = "switch_model"
+
+        /**
+         * Profile id gating [ModelPickerSheet]. Only Claude Code has a
+         * hard-coded model list; other profiles that declare a `switch_model`
+         * slot fall through to the slot's JSON action. See design decision 3.
+         */
+        const val CLAUDE_PROFILE_ID = "profile.claude-code"
 
         fun factory(app: VibePadApplication, profile: Profile): ViewModelProvider.Factory =
             viewModelFactory {

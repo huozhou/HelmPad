@@ -32,7 +32,13 @@ data class MacroDefinition(
  * A full grid of [Profile.SLOT_COUNT] macros that the user can fire from the operator
  * screen.
  *
- * @property id Stable profile identifier ("profile.claude-code" for v1's only entry).
+ * @property id Stable profile identifier (e.g. `"profile.claude-code"`,
+ *              `"profile.codex"`, `"profile.cursor"`). Never displayed;
+ *              used as the key for persistence, icon lookup, and profile-gated
+ *              UI logic like [ModelPickerSheet]. The same profile drives both
+ *              CLI (`codex`, `cursor-agent`) and GUI (Codex app, Cursor /
+ *              VS Code chat) surfaces — actions are picked so they work in
+ *              either, which is why `"CLI"` is not in the display name.
  * @property name Display name shown in the profile selector.
  * @property schemaVersion Major / minor / patch. Readers reject unknown major versions.
  */

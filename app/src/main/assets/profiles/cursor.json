@@ -1,0 +1,63 @@
+{
+  "id": "profile.cursor",
+  "name": "Cursor",
+  "schemaVersion": "1.0.0",
+  "slots": [
+    {
+      "id": "approve",
+      "label": "Approve",
+      "iconRef": "check_circle",
+      "action": { "type": "Literal", "text": "\n" },
+      "destructive": false
+    },
+    {
+      "id": "escape",
+      "label": "Esc",
+      "iconRef": "close",
+      "action": { "type": "Chord", "modifiers": [], "key": "ESCAPE" },
+      "destructive": false
+    },
+    {
+      "id": "cycle_mode",
+      "label": "Cycle mode",
+      "iconRef": "autorenew",
+      "action": { "type": "Chord", "modifiers": ["SHIFT"], "key": "TAB" },
+      "destructive": false
+    },
+    {
+      "id": "arrow_up",
+      "label": "↑",
+      "iconRef": "arrow_upward",
+      "action": { "type": "Chord", "modifiers": [], "key": "UP_ARROW" },
+      "destructive": false
+    },
+    {
+      "id": "switch_model",
+      "label": "Switch model",
+      "iconRef": "swap_horiz",
+      "action": { "type": "Chord", "modifiers": ["PRIMARY"], "key": "SLASH" },
+      "destructive": false
+    },
+    {
+      "id": "new_session",
+      "label": "New session",
+      "iconRef": "restart_alt",
+      "action": { "type": "Literal", "text": "/new\n" },
+      "destructive": true
+    },
+    {
+      "id": "diff",
+      "label": "Diff",
+      "iconRef": "difference",
+      "action": { "type": "Literal", "text": "/diff\n" },
+      "destructive": false
+    },
+    {
+      "id": "arrow_down",
+      "label": "↓",
+      "iconRef": "arrow_downward",
+      "action": { "type": "Chord", "modifiers": [], "key": "DOWN_ARROW" },
+      "destructive": false
+    }
+  ]
+}

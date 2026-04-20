@@ -141,7 +141,7 @@ private fun BodyLayout(
             )
             Column(modifier = Modifier.weight(0.4f).fillMaxSize()) {
                 if (!interactive) DisconnectedBanner()
-                ProfileSectionHeader(profileName = profileDisplayName)
+                ProfileSectionHeader(profileId = profile.id, profileName = profileDisplayName)
                 MacroGrid(
                     profile = profile,
                     onFire = { if (interactive) onFireMacro(it.id) },
@@ -183,7 +183,7 @@ private fun BodyLayout(
                     )
                     Column(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
                         if (!interactive) DisconnectedBanner()
-                        ProfileSectionHeader(profileName = profileDisplayName)
+                        ProfileSectionHeader(profileId = profile.id, profileName = profileDisplayName)
                         MacroGrid(
                             profile = profile,
                             onFire = { if (interactive) onFireMacro(it.id) },
@@ -207,7 +207,7 @@ private fun BodyLayout(
                     )
                     Column(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
                         if (!interactive) DisconnectedBanner()
-                        ProfileSectionHeader(profileName = profileDisplayName)
+                        ProfileSectionHeader(profileId = profile.id, profileName = profileDisplayName)
                         MacroGrid(
                             profile = profile,
                             onFire = { if (interactive) onFireMacro(it.id) },

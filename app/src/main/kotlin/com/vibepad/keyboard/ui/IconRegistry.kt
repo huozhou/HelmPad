@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Autorenew
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Compress
+import androidx.compose.material.icons.filled.Difference
 import androidx.compose.material.icons.filled.Radar
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.SwapHoriz
@@ -31,6 +32,7 @@ internal object IconRegistry {
         "swap_horiz" to Icons.Filled.SwapHoriz,
         "restart_alt" to Icons.Filled.RestartAlt,
         "compress" to Icons.Filled.Compress,
+        "difference" to Icons.Filled.Difference,
         "close" to Icons.Filled.Close,
         "arrow_upward" to Icons.Filled.ArrowUpward,
         "arrow_downward" to Icons.Filled.ArrowDownward,

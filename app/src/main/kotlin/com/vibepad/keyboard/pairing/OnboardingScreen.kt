@@ -49,9 +49,11 @@ import androidx.compose.ui.unit.dp
 import com.vibepad.keyboard.R
 import com.vibepad.keyboard.hid.HostDevice
 import com.vibepad.keyboard.input.HostTarget
+import com.vibepad.keyboard.macro.Profile
 import com.vibepad.keyboard.ui.BrandChrome
+import com.vibepad.keyboard.ui.ProfileDropdown
 
-private const val WIZARD_STEP_COUNT = 5
+private const val WIZARD_STEP_COUNT = 6
 
 /**
  * Top-level wizard composable. Stateless w.r.t. hosting activity — the callers wire
@@ -85,7 +87,7 @@ fun OnboardingScreen(
     OnboardingScaffold(
         state = state,
         onAdvance = {
-            if (state.step == OnboardingStep.HOST_TARGET) viewModel.finish()
+            if (state.step == OnboardingStep.PROFILE) viewModel.finish()
             else viewModel.advance()
         },
         onRetreat = viewModel::retreat,
@@ -95,6 +97,7 @@ fun OnboardingScreen(
         onOpenBatterySettings = onOpenBatterySettings,
         onSelectHost = viewModel::selectHost,
         onSelectHostTarget = viewModel::selectHostTarget,
+        onSelectProfile = viewModel::selectProfile,
     )
 }
 
@@ -109,6 +112,7 @@ private fun OnboardingScaffold(
     onOpenBatterySettings: () -> Unit,
     onSelectHost: (HostDevice) -> Unit,
     onSelectHostTarget: (HostTarget) -> Unit,
+    onSelectProfile: (String) -> Unit,
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -155,6 +159,11 @@ private fun OnboardingScaffold(
                         selected = state.selectedHostTarget,
                         onSelect = onSelectHostTarget,
                     )
+                    OnboardingStep.PROFILE -> StepProfile(
+                        profiles = state.profiles,
+                        selectedProfileId = state.selectedProfileId,
+                        onSelect = onSelectProfile,
+                    )
                     OnboardingStep.DONE -> { /* completion kicks caller */ }
                 }
             }
@@ -162,7 +171,7 @@ private fun OnboardingScaffold(
             NavigationRow(
                 canAdvance = state.canAdvance,
                 canRetreat = state.step.ordinal > 0,
-                primaryLabel = if (state.step == OnboardingStep.HOST_TARGET) {
+                primaryLabel = if (state.step == OnboardingStep.PROFILE) {
                     stringResource(R.string.onboarding_finish)
                 } else {
                     stringResource(R.string.onboarding_next)
@@ -369,6 +378,52 @@ private fun StepHostTarget(
             icon = Icons.Filled.PhoneAndroid,
             selected = selected == HostTarget.WINDOWS,
             onSelect = { onSelect(HostTarget.WINDOWS) },
+        )
+    }
+}
+
+@Composable
+private fun StepProfile(
+    profiles: List<Profile>,
+    selectedProfileId: String?,
+    onSelect: (String) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Text(
+            text = stringResource(R.string.onboarding_profile_title),
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.SemiBold,
+        )
+        Text(
+            text = stringResource(R.string.onboarding_profile_body),
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            ),
+        ) {
+            if (profiles.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.onboarding_profile_loading),
+                    modifier = Modifier.padding(16.dp),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            } else {
+                ProfileDropdown(
+                    profiles = profiles,
+                    activeProfileId = selectedProfileId
+                        ?: OnboardingState.DEFAULT_PROFILE_ID,
+                    onSelect = onSelect,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
+        Text(
+            text = stringResource(R.string.onboarding_profile_footnote),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

@@ -23,11 +23,11 @@ class ProfileSectionHeaderSnapshotTest {
     val paparazzi = Paparazzi(deviceConfig = seedConfig)
 
     @Test fun en() = snapshot(locale = "en") {
-        ProfileSectionHeader(profileName = "Claude Code")
+        ProfileSectionHeader(profileId = "profile.claude-code", profileName = "Claude Code")
     }
 
     @Test fun zh() = snapshot(locale = "zh-rCN") {
-        ProfileSectionHeader(profileName = "Claude Code")
+        ProfileSectionHeader(profileId = "profile.claude-code", profileName = "Claude Code")
     }
 
     private fun snapshot(locale: String, content: @androidx.compose.runtime.Composable () -> Unit) {

@@ -6,14 +6,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.vibepad.keyboard.VibePadApplication
 import com.vibepad.keyboard.hid.HostDevice
 import com.vibepad.keyboard.input.HostTarget
+import com.vibepad.keyboard.macro.AssetProfileSource
 import com.vibepad.keyboard.macro.SelectionsStore
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -34,6 +37,7 @@ class OnboardingViewModel(
     private val permissionsGranted: () -> Boolean,
     private val selectionsStore: SelectionsStore,
     private val completionStore: OnboardingCompletionStore,
+    private val profileSource: AssetProfileSource,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(OnboardingState())
@@ -47,6 +51,32 @@ class OnboardingViewModel(
         // We do NOT persist any "last step" — see OnboardingState.resumeStep().
         refreshEnvironment()
         _state.update { it.copy(step = it.resumeStep()) }
+        viewModelScope.launch { loadProfilesAndSelection() }
+    }
+
+    /**
+     * Loads bundled profiles from assets and seeds `selectedProfileId` from
+     * `SelectionsStore`. If the user already has a persisted profile id we
+     * treat the PROFILE step as pre-completed (they onboarded once, and the
+     * upgrade path that introduced this step shouldn't ask them again). If
+     * the store is empty we keep the cold-start default and leave
+     * `profileStepCompleted = false` so `firstIncompleteStep` routes through
+     * the new PROFILE step.
+     */
+    private suspend fun loadProfilesAndSelection() {
+        val outcome = runCatching { profileSource.loadAll() }.getOrNull()
+        val loaded = outcome?.profiles.orEmpty()
+        val persistedId = selectionsStore.profileIdFlow().first()
+        _state.update { current ->
+            val resolvedId = persistedId
+                ?: current.selectedProfileId
+                ?: OnboardingState.DEFAULT_PROFILE_ID
+            current.copy(
+                profiles = loaded,
+                selectedProfileId = resolvedId,
+                profileStepCompleted = persistedId != null,
+            )
+        }
     }
 
     fun refreshEnvironment() {
@@ -80,6 +110,15 @@ class OnboardingViewModel(
         _state.update { it.copy(selectedHostTarget = target) }
     }
 
+    /**
+     * User picked a profile in the PROFILE step. Only mutates local state —
+     * persistence happens in [finish], so backing out of onboarding before
+     * pressing Finish doesn't silently rewrite the user's stored selection.
+     */
+    fun selectProfile(profileId: String) {
+        _state.update { it.copy(selectedProfileId = profileId) }
+    }
+
     /** Called when the UI enters the pairing step. */
     fun startBondedPolling() {
         if (bondedPollingJob?.isActive == true) return
@@ -108,10 +147,14 @@ class OnboardingViewModel(
         val s = _state.value
         val host = s.selectedHost ?: return
         val target = s.selectedHostTarget ?: return
+        val profileId = s.selectedProfileId ?: OnboardingState.DEFAULT_PROFILE_ID
         viewModelScope.launch {
             selectionsStore.setHostTarget(host.address, target)
+            selectionsStore.setProfileId(profileId)
             completionStore.markComplete()
-            _state.update { it.copy(step = OnboardingStep.DONE) }
+            _state.update {
+                it.copy(step = OnboardingStep.DONE, profileStepCompleted = true)
+            }
         }
     }
 
@@ -126,11 +169,13 @@ class OnboardingViewModel(
         fun factory(context: Context): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val appContext = context.applicationContext
+                val app = appContext as VibePadApplication
                 OnboardingViewModel(
                     env = AndroidBluetoothEnvironment(appContext),
                     permissionsGranted = { PermissionHelper.allGranted(appContext) },
-                    selectionsStore = SelectionsStore(appContext),
-                    completionStore = OnboardingCompletionStore(appContext),
+                    selectionsStore = app.selectionsStore,
+                    completionStore = app.completionStore,
+                    profileSource = app.profileSource,
                 )
             }
         }

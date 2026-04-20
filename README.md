@@ -26,7 +26,7 @@ So I made a small Bluetooth keyboard + trackpad that runs on the phone I was alr
 
 To the laptop it just looks like a regular Bluetooth keyboard and mouse — no companion app, no driver, no permissions dance. On the phone:
 
-- Eight macros in two rows: **Approve · Esc · Cycle mode · ↑** and **Switch model · New session · Compact · ↓**. The ones I actually press most during an agent loop.
+- Eight macros in two rows, tuned for the agent you actually drive: **Claude Code**, **Codex**, or **Cursor**. Each profile works the same whether you're in the CLI (`codex`, `cursor-agent`) or the GUI (Codex app, Cursor / VS Code chat). Approve / Esc / Switch model / New session sit in the same place across all three; the middle two slots swap for the agent's own commands (Cycle mode, `/approvals`, `/diff`, etc.).
 - The rest of the screen is a real trackpad — single-finger move and tap, two-finger scroll, two-finger tap for right-click, long-press to drag.
 - It auto-detects whether the phone is paired to a Mac or to Windows and picks the matching modifier key (Cmd vs. Ctrl), so the same phone works on either machine without me thinking about it.
 
@@ -42,7 +42,7 @@ You'll need an Android 9+ phone and a Mac or Windows machine.
 
 1. Grab the latest APK from Releases and install it.
 2. From your laptop's Bluetooth settings, pair the phone like any other keyboard.
-3. Open Helm Pad and follow the on-screen setup once.
+3. Open Helm Pad and follow the on-screen setup once. The last step picks the CLI you mostly drive — Claude Code is preselected, so if that's what you use you can just hit Next. You can change it anytime from Settings → Active profile.
 
 It works fine on the phone you carry day to day. It also works fine on a spare phone you keep on the desk, if you'd rather not mix it with personal use. There's nothing to install on the laptop side.
 

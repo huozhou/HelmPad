@@ -2,10 +2,18 @@ package com.vibepad.keyboard.pairing
 
 import com.vibepad.keyboard.hid.HostDevice
 import com.vibepad.keyboard.input.HostTarget
+import com.vibepad.keyboard.macro.Profile
 
 /**
  * View state for the onboarding screen. Pure data — safe to snapshot-test and to
  * feed into `@Preview` composables.
+ *
+ * `selectedProfileId` is seeded with `"profile.claude-code"` at construction
+ * time so the PROFILE step's primary button is immediately enabled — users who
+ * only want Claude see a one-tap Finish. `profileStepCompleted` flips to `true`
+ * after [OnboardingViewModel.finish] writes the id to `SelectionsStore`; that
+ * tell is what `firstIncompleteStep` uses to distinguish "default not yet
+ * confirmed" from "user has reviewed profile selection".
  */
 data class OnboardingState(
     val step: OnboardingStep = OnboardingStep.INTRO,
@@ -15,6 +23,9 @@ data class OnboardingState(
     val selectedHost: HostDevice? = null,
     val selectedHostTarget: HostTarget? = null,
     val batteryOptimizationExempt: Boolean = false,
+    val profiles: List<Profile> = emptyList(),
+    val selectedProfileId: String? = DEFAULT_PROFILE_ID,
+    val profileStepCompleted: Boolean = false,
 ) {
 
     /** Can the user advance past [step]? Drives the enabled state of the Next button. */
@@ -24,6 +35,7 @@ data class OnboardingState(
         OnboardingStep.BLUETOOTH -> bluetoothEnabled
         OnboardingStep.PAIRING -> selectedHost != null
         OnboardingStep.HOST_TARGET -> selectedHostTarget != null && selectedHost != null
+        OnboardingStep.PROFILE -> selectedProfileId != null
         OnboardingStep.DONE -> false
     }
 
@@ -33,6 +45,7 @@ data class OnboardingState(
         if (!bluetoothEnabled) return OnboardingStep.BLUETOOTH
         if (selectedHost == null) return OnboardingStep.PAIRING
         if (selectedHostTarget == null) return OnboardingStep.HOST_TARGET
+        if (!profileStepCompleted) return OnboardingStep.PROFILE
         return OnboardingStep.DONE
     }
 
@@ -47,9 +60,19 @@ data class OnboardingState(
         val hasAnyProgress = permissionsGranted ||
             bluetoothEnabled ||
             selectedHost != null ||
-            selectedHostTarget != null
+            selectedHostTarget != null ||
+            profileStepCompleted
         return if (hasAnyProgress) firstIncompleteStep() else OnboardingStep.INTRO
     }
 
     val isComplete: Boolean get() = firstIncompleteStep() == OnboardingStep.DONE
+
+    companion object {
+        /**
+         * Cold-start default for [selectedProfileId]. Mirrors
+         * `com.vibepad.keyboard.ui.DEFAULT_PROFILE_ID` — kept duplicated here
+         * so the pairing module doesn't reach into `ui` just for a constant.
+         */
+        const val DEFAULT_PROFILE_ID = "profile.claude-code"
+    }
 }

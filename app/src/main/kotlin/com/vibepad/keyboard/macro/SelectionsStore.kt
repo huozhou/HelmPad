@@ -16,7 +16,10 @@ private val Context.selectionsDataStore: DataStore<Preferences> by preferencesDa
  * User selections persisted across process death via [DataStore] Preferences.
  *
  * Two pieces of state:
- *  - The currently active [Profile.id] — v1 will always be the bundled `profile.claude-code`.
+ *  - The currently active [Profile.id]. Users pick from the bundled profiles
+ *    (Claude Code, Codex, Cursor) via onboarding or Settings; a missing or
+ *    unknown value is treated as the Claude Code default by
+ *    `resolveActiveProfile` at read time rather than forced on write.
  *  - The [HostTarget] chosen per paired host (keyed by MAC address). When the same host
  *    reconnects we silently restore the user's prior choice; see spec
  *    `pairing-and-permissions` §"按主机记忆目标".

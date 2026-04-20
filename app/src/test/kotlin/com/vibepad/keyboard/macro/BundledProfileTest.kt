@@ -10,144 +10,278 @@ import org.junit.Test
 import java.io.File
 
 /**
- * End-to-end sanity check over the bundled `assets/profiles/claude-code.json` file.
+ * End-to-end sanity check over every bundled profile JSON under
+ * `assets/profiles/`.
  *
- * Running this as a plain JVM test means we don't need the Android runtime — we just
- * read the asset straight off the filesystem. That keeps the check cheap and
- * immediately catches typos at the first edit.
+ * Running this as a plain JVM test means we don't need the Android runtime — we
+ * just read the assets straight off the filesystem. That keeps the check cheap
+ * and immediately catches typos at the first edit.
+ *
+ * Structured as two layers per `add-codex-cursor-profiles` design decision 7:
+ *
+ *  - **Strong invariants** — things every bundled profile MUST satisfy, so the
+ *    UI can rely on them without per-profile special-casing (anchor slots,
+ *    `destructive=true` only on `new_session`, etc.).
+ *  - **Weak set assertions** — per-profile slot-id sets are listed explicitly
+ *    so a JSON edit that drops or renames a slot either updates the set here
+ *    or fails the test loudly.
  */
 class BundledProfileTest {
 
-    @Test
-    fun bundled_claude_code_profile_is_valid() {
-        val file = File("src/main/assets/profiles/claude-code.json")
-        assertTrue("Bundled profile should exist at ${file.absolutePath}", file.exists())
+    /** Anchor slot ids every bundled profile must include (decision 7). */
+    private val anchorSlotIds = setOf("approve", "escape", "arrow_up", "arrow_down")
 
-        val loader = ProfileLoader()
-        val res = loader.loadFromString(file.readText())
-        assertTrue("expected Ok, was $res", res is ProfileLoader.Result.Ok)
-        val profile = (res as ProfileLoader.Result.Ok).profile
-
-        assertEquals("profile.claude-code", profile.id)
-        assertEquals(8, profile.slots.size)
-
-        val requiredIds = setOf(
+    /**
+     * Exact slot-id sets per bundled profile. Adjusting a bundled JSON must
+     * also update this map — that is intentional, it's the invariant
+     * enforcement.
+     */
+    private val expectedSlotIds: Map<String, Set<String>> = mapOf(
+        "profile.claude-code" to setOf(
             "approve", "escape", "cycle_mode", "arrow_up",
             "switch_model", "new_session", "compact", "arrow_down",
-        )
-        assertEquals(requiredIds, profile.slots.map { it.id }.toSet())
+        ),
+        "profile.codex" to setOf(
+            "approve", "escape", "cycle_approvals", "arrow_up",
+            "switch_model", "new_session", "compact", "arrow_down",
+        ),
+        "profile.cursor" to setOf(
+            "approve", "escape", "cycle_mode", "arrow_up",
+            "switch_model", "new_session", "diff", "arrow_down",
+        ),
+    )
 
-        profile.slots.forEach { slot ->
-            assertTrue(slot.label.isNotBlank())
-            assertTrue(slot.iconRef.isNotBlank())
+    @Test
+    fun every_bundled_profile_file_loads_and_passes_strong_invariants() {
+        val dir = File("src/main/assets/profiles")
+        val files = dir.listFiles { _, name -> name.endsWith(".json") }?.sortedBy { it.name }
+            ?: error("No bundled profile directory at ${dir.absolutePath}")
+        assertTrue(
+            "Expected at least one bundled profile JSON, found 0 in ${dir.absolutePath}",
+            files.isNotEmpty(),
+        )
+
+        val loader = ProfileLoader()
+        val loadedIds = mutableSetOf<String>()
+        for (file in files) {
+            val res = loader.loadFromString(file.readText())
+            assertTrue("expected Ok for ${file.name}, was $res", res is ProfileLoader.Result.Ok)
+            val profile = (res as ProfileLoader.Result.Ok).profile
+
+            assertEquals(
+                "profile ${profile.id}: schemaVersion must be 1.0.0",
+                "1.0.0",
+                profile.schemaVersion,
+            )
+            assertEquals(
+                "profile ${profile.id}: must have 8 slots (${file.name})",
+                Profile.SLOT_COUNT,
+                profile.slots.size,
+            )
+            assertTrue(
+                "profile ${profile.id}: name must be non-blank",
+                profile.name.isNotBlank(),
+            )
+
+            val slotIds = profile.slots.map { it.id }.toSet()
+            assertTrue(
+                "profile ${profile.id}: must include anchor slots $anchorSlotIds, got $slotIds",
+                slotIds.containsAll(anchorSlotIds),
+            )
+            assertAnchorActions(profile)
+            assertDestructiveOnlyOnNewSession(profile)
+
+            profile.slots.forEach { slot ->
+                assertTrue(
+                    "profile ${profile.id}: slot ${slot.id} label must be non-blank",
+                    slot.label.isNotBlank(),
+                )
+                assertTrue(
+                    "profile ${profile.id}: slot ${slot.id} iconRef must be non-blank",
+                    slot.iconRef.isNotBlank(),
+                )
+            }
+
+            val expected = expectedSlotIds[profile.id]
+            if (expected != null) {
+                assertEquals(
+                    "profile ${profile.id}: slot id set drifted (update expectedSlotIds " +
+                        "in BundledProfileTest if this is intentional)",
+                    expected,
+                    slotIds,
+                )
+            }
+
+            loadedIds += profile.id
         }
+
+        assertTrue(
+            "Expected the Claude Code profile to ship; loaded ids were $loadedIds",
+            "profile.claude-code" in loadedIds,
+        )
+        assertEquals(
+            "Every id in expectedSlotIds must correspond to a shipped profile",
+            expectedSlotIds.keys,
+            loadedIds.intersect(expectedSlotIds.keys),
+        )
     }
 
     /**
-     * Slot ids removed across the `macro-grid-polish` and `claude-code-profile-trim`
-     * changes must stay removed. `reject` carried a wrong semantic ("2\n" mapped
-     * to "Yes, don't ask again" in newer Claude Code versions) and is gone;
-     * `yes_dont_ask` was dropped after the upstream permission prompt proved too
-     * buggy to automate reliably (see `claude-code-profile-trim/design.md`
-     * decision 4); the remaining ids either had no day-to-day value or were
-     * covered cheaper by the generic arrow keys.
+     * Slot ids removed across the `macro-grid-polish` and
+     * `claude-code-profile-trim` changes must stay removed — applied across
+     * every bundled profile now, so copy-pasting slots between profiles can't
+     * smuggle a banned id back in.
      */
     @Test
-    fun removed_slot_ids_do_not_reappear() {
-        val profile = loadBundled()
+    fun removed_slot_ids_do_not_reappear_in_any_profile() {
         val bannedIds = setOf(
             "reject", "interrupt",
             "yes_dont_ask", "add_file", "tab", "enter",
             "history_up", "history_down", "toggle_plan",
         )
-        val overlap = profile.slots.map { it.id }.toSet() intersect bannedIds
-        assertTrue(
-            "Removed slot ids reappeared: $overlap (see claude-code-profile-trim design.md)",
-            overlap.isEmpty(),
-        )
+        loadAll().forEach { profile ->
+            val overlap = profile.slots.map { it.id }.toSet() intersect bannedIds
+            assertTrue(
+                "profile ${profile.id}: banned slot ids reappeared: $overlap",
+                overlap.isEmpty(),
+            )
+        }
     }
 
     /**
-     * Only `new_session` is destructive — it wipes the current Claude Code context.
-     * Other irreversible-adjacent actions (Esc, Cycle mode) are recoverable at the
-     * conversation level, so they use the regular container color and haptic.
+     * `switch_model` action is picked per profile so the same button works in
+     * both the CLI and the GUI surface for that agent:
+     *
+     *  - Claude Code & Codex: `Literal("/model\n")`. Claude's tap is
+     *    intercepted by [ModelPickerSheet]; Codex drops into its own TUI
+     *    `/model` menu — both the `codex` CLI and the Codex app accept the
+     *    slash command.
+     *  - Cursor: `Chord(PRIMARY, SLASH)` — `Cmd+/` on macOS, `Ctrl+/` on
+     *    Windows. `cursor-agent` cycles to the next model; the Cursor /
+     *    VS Code chat panel binds the same shortcut.
      */
     @Test
-    fun destructive_flag_is_only_on_new_session() {
-        val profile = loadBundled()
-        profile.slots.forEach { slot ->
-            if (slot.id == "new_session") {
-                assertTrue("new_session must be destructive", slot.destructive)
-            } else {
-                assertFalse(
-                    "Only new_session should be destructive, but ${slot.id} is",
-                    slot.destructive,
+    fun switch_model_action_matches_profile_target() {
+        val literalProfiles = setOf("profile.claude-code", "profile.codex")
+        val chordProfiles = setOf("profile.cursor")
+
+        loadAll().forEach { profile ->
+            val slot = profile.slots.singleOrNull { it.id == "switch_model" } ?: return@forEach
+            when (profile.id) {
+                in literalProfiles -> {
+                    val action = slot.action
+                    assertTrue(
+                        "profile ${profile.id}: switch_model must be Literal, got ${action::class.simpleName}",
+                        action is InputAction.Literal,
+                    )
+                    assertEquals(
+                        "profile ${profile.id}: switch_model literal should be '/model\\n'",
+                        "/model\n",
+                        (action as InputAction.Literal).text,
+                    )
+                }
+                in chordProfiles -> {
+                    val action = slot.action
+                    assertTrue(
+                        "profile ${profile.id}: switch_model must be Chord, got ${action::class.simpleName}",
+                        action is InputAction.Chord,
+                    )
+                    val chord = action as InputAction.Chord
+                    assertEquals(
+                        "profile ${profile.id}: switch_model must use PRIMARY only (Cmd/Ctrl+/)",
+                        setOf(Mod.PRIMARY),
+                        chord.modifiers,
+                    )
+                    assertEquals(
+                        "profile ${profile.id}: switch_model key must be SLASH (Cmd+/ on macOS, Ctrl+/ on Windows)",
+                        Key.SLASH,
+                        chord.key,
+                    )
+                }
+                else -> error(
+                    "profile ${profile.id}: no switch_model contract defined. " +
+                        "Update literalProfiles or chordProfiles in BundledProfileTest when shipping a new bundled profile.",
                 )
             }
         }
     }
 
     /**
-     * `arrow_up` must resolve to the bare UP_ARROW keyboard usage with no modifiers.
-     * This keeps history navigation byte-identical on macOS and Windows and
-     * survives as a manual workaround for the deleted `yes_dont_ask` slot.
+     * The `cycle_*` slot labels must stay generic across profiles. Early
+     * drafts spelled out individual mode names ("Plan mode"), which drifts out
+     * of sync with upstream whenever the CLI renames modes.
      */
     @Test
-    fun arrow_up_is_chord_of_arrow_up_key_with_no_modifiers() {
-        val slot = loadBundled().slots.single { it.id == "arrow_up" }
-        val action = slot.action
-        assertTrue("arrow_up must use Chord, got ${action::class.simpleName}", action is InputAction.Chord)
-        val chord = action as InputAction.Chord
-        assertEquals(Key.UP_ARROW, chord.key)
-        assertEquals(emptySet<Mod>(), chord.modifiers)
-    }
-
-    /** Symmetric guard for `arrow_down` — see [arrow_up_is_chord_of_arrow_up_key_with_no_modifiers]. */
-    @Test
-    fun arrow_down_is_chord_of_arrow_down_key_with_no_modifiers() {
-        val slot = loadBundled().slots.single { it.id == "arrow_down" }
-        val action = slot.action
-        assertTrue("arrow_down must use Chord, got ${action::class.simpleName}", action is InputAction.Chord)
-        val chord = action as InputAction.Chord
-        assertEquals(Key.DOWN_ARROW, chord.key)
-        assertEquals(emptySet<Mod>(), chord.modifiers)
-    }
-
-    /**
-     * The stored action on `switch_model` stays as a literal `/model\n` — that's the
-     * fallback payload the JSON serializer accepts, and the UI intercepts the tap
-     * before it reaches [KeymapResolver]. If the in-app [ModelPickerSheet] is ever
-     * torn out, firing this slot directly still opens the TUI list menu.
-     */
-    @Test
-    fun switch_model_action_is_literal_slash_model_newline() {
-        val slot = loadBundled().slots.single { it.id == "switch_model" }
-        val action = slot.action
-        assertTrue("switch_model must use Literal, got ${action::class.simpleName}", action is InputAction.Literal)
-        assertEquals("/model\n", (action as InputAction.Literal).text)
-    }
-
-    /**
-     * The `cycle_mode` label must stay generic. Early drafts spelled out individual
-     * mode names ("Plan mode"), which drifts out of sync with upstream whenever
-     * Anthropic reorders or renames modes. Keeping the label generic lets
-     * Shift-Tab's next-mode semantics carry the meaning at use time.
-     */
-    @Test
-    fun cycle_mode_label_does_not_contain_mode_names() {
-        val slot = loadBundled().slots.single { it.id == "cycle_mode" }
+    fun cycle_slot_labels_stay_generic_across_profiles() {
         val bannedSubstrings = listOf("Plan", "Thinking", "Auto")
-        bannedSubstrings.forEach { needle ->
-            assertFalse(
-                "cycle_mode label must stay generic; found '$needle' in '${slot.label}'",
-                slot.label.contains(needle),
-            )
+        loadAll().forEach { profile ->
+            profile.slots
+                .filter { it.id.startsWith("cycle_") }
+                .forEach { slot ->
+                    bannedSubstrings.forEach { needle ->
+                        assertFalse(
+                            "profile ${profile.id}: slot ${slot.id} label must stay generic; " +
+                                "found '$needle' in '${slot.label}'",
+                            slot.label.contains(needle),
+                        )
+                    }
+                }
         }
     }
 
-    private fun loadBundled(): Profile {
-        val file = File("src/main/assets/profiles/claude-code.json")
-        val res = ProfileLoader().loadFromString(file.readText())
-        return (res as ProfileLoader.Result.Ok).profile
+    // --- shared helpers ------------------------------------------------------
+
+    private fun assertAnchorActions(profile: Profile) {
+        val byId = profile.slots.associateBy { it.id }
+        val approve = byId.getValue("approve").action
+        assertTrue(
+            "profile ${profile.id}: approve must be Literal(\"\\n\"), got $approve",
+            approve is InputAction.Literal && approve.text == "\n",
+        )
+
+        val escape = byId.getValue("escape").action
+        assertTrue(
+            "profile ${profile.id}: escape must be Chord([], ESCAPE), got $escape",
+            escape is InputAction.Chord && escape.modifiers.isEmpty() && escape.key == Key.ESCAPE,
+        )
+
+        val arrowUp = byId.getValue("arrow_up").action
+        assertTrue(
+            "profile ${profile.id}: arrow_up must be Chord([], UP_ARROW), got $arrowUp",
+            arrowUp is InputAction.Chord && arrowUp.modifiers.isEmpty() && arrowUp.key == Key.UP_ARROW,
+        )
+
+        val arrowDown = byId.getValue("arrow_down").action
+        assertTrue(
+            "profile ${profile.id}: arrow_down must be Chord([], DOWN_ARROW), got $arrowDown",
+            arrowDown is InputAction.Chord && arrowDown.modifiers.isEmpty() && arrowDown.key == Key.DOWN_ARROW,
+        )
     }
+
+    private fun assertDestructiveOnlyOnNewSession(profile: Profile) {
+        profile.slots.forEach { slot ->
+            if (slot.id == "new_session") {
+                assertTrue(
+                    "profile ${profile.id}: new_session must be destructive",
+                    slot.destructive,
+                )
+            } else {
+                assertFalse(
+                    "profile ${profile.id}: only new_session should be destructive, but ${slot.id} is",
+                    slot.destructive,
+                )
+            }
+        }
+    }
+
+    private fun loadAll(): List<Profile> {
+        val dir = File("src/main/assets/profiles")
+        val files = dir.listFiles { _, name -> name.endsWith(".json") }?.sortedBy { it.name }.orEmpty()
+        val loader = ProfileLoader()
+        return files.map { file ->
+            val res = loader.loadFromString(file.readText())
+            (res as ProfileLoader.Result.Ok).profile
+        }
+    }
+
 }

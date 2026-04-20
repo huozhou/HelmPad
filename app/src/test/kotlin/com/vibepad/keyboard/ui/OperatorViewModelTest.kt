@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import com.vibepad.keyboard.hid.FakeHidTransport
 import com.vibepad.keyboard.input.HidFrame
 import com.vibepad.keyboard.input.Key
+import com.vibepad.keyboard.macro.Profile
 import com.vibepad.keyboard.macro.ProfileLoader
 import com.vibepad.keyboard.macro.SelectionsStore
 import com.vibepad.keyboard.pairing.PairedHostsStore
@@ -131,6 +132,75 @@ class OperatorViewModelTest {
         assertFalse("sheet must remain closed", vm.showModelPicker.value)
     }
 
+    /**
+     * Codex has its own in-TUI model picker, so tapping `switch_model`
+     * must forward the profile's literal `/model\n` and leave the in-app
+     * bottom sheet untouched. See `add-codex-cursor-profiles` design
+     * decision 3.
+     */
+    @Test
+    fun `tap switch_model in codex profile fires literal and does not open sheet`() = runBlocking {
+        val vm = buildVm(loadBundled("codex.json"))
+        val sent = collectFrames { vm.fireMacro("switch_model") }
+        assertFalse("sheet must remain closed for Codex", vm.showModelPicker.value)
+        assertPressedKeyUsages("/model\n", sent)
+    }
+
+    /**
+     * Cursor uses a Chord(PRIMARY, SLASH) — Cmd+/ on macOS, Ctrl+/ on Windows —
+     * to cycle models in both `cursor-agent` and the Cursor / VS Code chat
+     * panel. The tap must bypass [ModelPickerSheet] entirely and emit a single
+     * press frame carrying the platform's primary modifier + SLASH, followed
+     * by a release frame.
+     */
+    @Test
+    fun `tap switch_model in cursor profile fires chord and does not open sheet`() = runBlocking {
+        val vm = buildVm(loadBundled("cursor.json"))
+        val sent = collectFrames { vm.fireMacro("switch_model") }
+        assertFalse("sheet must remain closed for Cursor", vm.showModelPicker.value)
+
+        val keyboardFrames = sent.filterIsInstance<HidFrame.Keyboard>()
+        assertEquals(
+            "expected one press + one release for Cmd/Ctrl+/, got $keyboardFrames",
+            2,
+            keyboardFrames.size,
+        )
+        val press = keyboardFrames[0]
+        assertEquals(
+            "press frame must carry SLASH usage",
+            Key.SLASH.usage,
+            press.keys.single(),
+        )
+        assertTrue(
+            "press modifier byte must be non-zero (Cmd or Ctrl), got ${press.modifier}",
+            press.modifier != 0,
+        )
+        val release = keyboardFrames[1]
+        assertTrue("release frame must carry no keys", release.keys.isEmpty())
+        assertEquals("release modifier byte must be zero", 0, release.modifier)
+    }
+
+    /**
+     * Regression guard — no slot in a non-Claude profile should ever open
+     * [ModelPickerSheet], even ones whose id happens to equal
+     * [OperatorViewModel.SLOT_SWITCH_MODEL] or other anchors. This brute-force
+     * iterates every slot of both non-Claude bundled profiles.
+     */
+    @Test
+    fun `no slot opens sheet in non-claude profiles`() = runBlocking {
+        for (file in listOf("codex.json", "cursor.json")) {
+            val profile = loadBundled(file)
+            for (slot in profile.slots) {
+                val vm = buildVm(profile)
+                vm.fireMacro(slot.id)
+                assertFalse(
+                    "profile ${profile.id} slot ${slot.id} must not open ModelPickerSheet",
+                    vm.showModelPicker.value,
+                )
+            }
+        }
+    }
+
     // ---- helpers ------------------------------------------------------------
 
     /**
@@ -167,15 +237,17 @@ class OperatorViewModelTest {
         )
     }
 
-    private fun buildVm(): OperatorViewModel {
-        val profile = ProfileLoader()
-            .loadFromString(File("src/main/assets/profiles/claude-code.json").readText())
-            .let { (it as ProfileLoader.Result.Ok).profile }
+    private fun buildVm(profile: Profile = loadBundled("claude-code.json")): OperatorViewModel {
         return OperatorViewModel(
             transport = transport,
             selectionsStore = selections,
             pairedHostsStore = pairedHosts,
             profile = profile,
         )
+    }
+
+    private fun loadBundled(fileName: String): Profile {
+        val text = File("src/main/assets/profiles/$fileName").readText()
+        return (ProfileLoader().loadFromString(text) as ProfileLoader.Result.Ok).profile
     }
 }

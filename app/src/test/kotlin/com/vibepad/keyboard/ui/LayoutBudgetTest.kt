@@ -52,7 +52,6 @@ class LayoutBudgetTest {
             LayoutBudget.MaxBannerHeight +
             LayoutBudget.DividerHeight +
             LayoutBudget.TouchpadMinHeight +
-            LayoutBudget.ProfileHeaderHeight +
             grid +
             LayoutBudget.SafetyBuffer
         assertEquals(expected, total)

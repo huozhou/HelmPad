@@ -4,12 +4,11 @@ import androidx.annotation.DrawableRes
 import com.vibepad.keyboard.R
 
 /**
- * Maps a [Profile.id] to the drawable used for its profile glyph (the small icon
- * shown by [ProfileSectionHeader] above the macro grid and alongside the
- * dropdown / onboarding rows in Settings).
+ * Maps a [Profile.id] to the drawable used for its profile glyph — shown
+ * alongside the dropdown and onboarding rows in Settings.
  *
- * Kept as a closed map so unknown profile ids fall back to the Claude Code glyph
- * — it is always bundled and always valid — rather than crashing the UI.
+ * Kept as a closed map so unknown profile ids fall back to the Claude Code
+ * glyph (always bundled, always valid) rather than crashing the UI.
  */
 internal object ProfileIconRegistry {
 

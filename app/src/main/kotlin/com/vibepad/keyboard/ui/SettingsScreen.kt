@@ -28,7 +28,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -40,7 +39,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,28 +53,23 @@ import androidx.compose.ui.unit.dp
 import com.vibepad.keyboard.BuildConfig
 import com.vibepad.keyboard.R
 import com.vibepad.keyboard.VibePadApplication
-import com.vibepad.keyboard.hid.FailureCause
-import com.vibepad.keyboard.hid.HidLinkState
-import com.vibepad.keyboard.hid.UnavailableReason
 import com.vibepad.keyboard.macro.Profile
 import kotlinx.coroutines.launch
 
 /**
- * Settings & diagnostics. Narrow scope by design — there is no macro editor and
- * no profile picker in v1. The screen has three jobs:
+ * Settings. Narrow scope by design — no macro editor, no profile picker in v1.
+ * The screen has two jobs:
  *
  *  1. Surface the active profile so the user knows what the eight macros mean.
- *  2. Show whether the HID link is healthy and offer a battery-optimization
- *     escape hatch when Android is killing the foreground service.
- *  3. Let the user replay the welcome wizard without nuking anything they\'ve set
- *     up. The button is treated as semi-destructive: confirmation dialog +
- *     error-tinted styling so it doesn\'t look like a one-tap reset.
+ *  2. Offer a battery-optimization escape hatch and a way to replay the welcome
+ *     wizard without nuking anything they've set up. The wizard button is
+ *     semi-destructive: confirmation dialog + error-tinted styling so it doesn't
+ *     look like a one-tap reset.
  *
- * The "Device" (model / Android version / HID-availability) and "Profile
- * diagnostics" sections that lived here previously were removed in
- * `settings-trim`: the former duplicated Android\'s own About-phone screen, the
- * latter only ever showed `OK` because the only profile is bundled and validated
- * by a unit test before each build.
+ * Connection health details (link state, MAC, last failure) used to live here
+ * but were removed — that information is duplicative with HostStatusSheet and
+ * speaks engineer-ese. Non-connected states surface in SetupRecoveryBanner
+ * above the operator grid, which is where users will actually notice them.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,7 +83,6 @@ fun SettingsScreen(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val linkState by app.hidTransport.state.collectAsState()
     var showRerunConfirm by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -124,7 +116,6 @@ fun SettingsScreen(
                     colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                     leadingContent = { Icon(Icons.Filled.Devices, contentDescription = null) },
                     headlineContent = { Text(stringResource(R.string.paired_hosts_entry_title)) },
-                    supportingContent = { Text(stringResource(R.string.paired_hosts_entry_subtitle)) },
                     trailingContent = {
                         Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
                     },
@@ -154,19 +145,8 @@ fun SettingsScreen(
                     stringResource(R.string.settings_profile_about_label),
                     profileAboutText(activeProfile),
                 )
-                HorizontalDivider()
-                KeyValue(
-                    stringResource(R.string.settings_profile_future_label),
-                    stringResource(R.string.settings_profile_future_body),
-                )
             }
 
-            SectionHeader("Connection health")
-            InfoCard {
-                KeyValue("Link state", linkStateLabel(linkState))
-                HorizontalDivider()
-                KeyValue("Last failure", lastFailureLabel(linkState))
-            }
             OutlinedButton(
                 onClick = {
                     val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
@@ -227,10 +207,10 @@ fun SettingsScreen(
 @Composable
 private fun SectionHeader(text: String) {
     Text(
-        text = text,
-        style = MaterialTheme.typography.labelLarge,
+        text = text.uppercase(),
+        style = MaterialTheme.typography.labelSmall,
         fontWeight = FontWeight.SemiBold,
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 }
 
@@ -332,32 +312,3 @@ private fun AboutVersionCard() {
     }
 }
 
-private fun linkStateLabel(state: HidLinkState): String = when (state) {
-    HidLinkState.Idle -> "Idle"
-    HidLinkState.Proxying -> "Connecting to Bluetooth profile proxy…"
-    HidLinkState.Advertising -> "Advertising — waiting for host"
-    is HidLinkState.Connected -> "Connected to ${state.host.name} (${state.host.address})"
-    is HidLinkState.Reconnecting -> {
-        val target = state.previousHost?.name ?: "host"
-        "Reconnecting to $target, attempt ${state.attempt}"
-    }
-    is HidLinkState.Unavailable -> "Unavailable: ${state.reason.name}"
-    is HidLinkState.Failed -> "Failed: ${causeLabel(state.cause)}"
-}
-
-private fun lastFailureLabel(state: HidLinkState): String = when (state) {
-    is HidLinkState.Failed -> causeLabel(state.cause)
-    is HidLinkState.Unavailable -> when (state.reason) {
-        UnavailableReason.BLUETOOTH_OFF -> "Bluetooth is off"
-        UnavailableReason.PERMISSIONS_MISSING -> "Runtime permissions missing"
-        UnavailableReason.DEVICE_NO_HID_PERIPHERAL -> "Device firmware cannot act as a HID peripheral"
-        UnavailableReason.BUNDLED_PROFILE_INVALID -> "Bundled profile failed validation"
-    }
-    else -> "—"
-}
-
-private fun causeLabel(cause: FailureCause): String = when (cause) {
-    FailureCause.REGISTER_APP_REJECTED -> "HID app registration rejected by the adapter"
-    FailureCause.PROXY_TIMEOUT -> "Timed out acquiring the BluetoothHidDevice proxy"
-    FailureCause.UNEXPECTED -> "Unexpected error"
-}

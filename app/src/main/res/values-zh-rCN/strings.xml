@@ -27,19 +27,14 @@
     <string name="acknowledgements_body">Apple、macOS 及 Apple 标识为 Apple Inc. 在美国及其他国家或地区注册的商标。Microsoft、Windows 及 Windows 标识为 Microsoft 公司集团的商标。Helm Pad 仅将上述标识用作对所选主机目标的指示性说明，与 Apple Inc. 及 Microsoft Corporation 不存在任何附属、背书或赞助关系。</string>
 
     <!-- 设置 → 当前 profile 区段。收起时一行下拉（左 icon + profile 名 + 右
-         下拉箭头）；展开后是 DropdownMenu，当前选中项带对勾。切换
-         是轻量、可回退的动作，下拉下方的 "About" 一句话说明每个 profile
-         面向什么工作流。 -->
+         下拉箭头）；展开后是 DropdownMenu，当前选中项带对勾。 -->
     <string name="settings_profile_section">当前 profile</string>
-    <string name="settings_profile_dropdown_supporting">点击可切换。切换立即生效，已配对的电脑不受影响。</string>
     <string name="settings_profile_dropdown_row_cd">当前 profile：%1$s，点击可切换到其他 profile。</string>
     <string name="settings_profile_dropdown_selected_cd">当前选中项</string>
     <string name="settings_profile_about_label">说明</string>
-    <string name="settings_profile_about_claude_code">为 Claude Code 调校的 8 个宏：Approve、Esc、Cycle mode、↑、Switch model、New session、Compact、↓。</string>
-    <string name="settings_profile_about_codex">为 OpenAI Codex 调校的 8 个宏（`codex` CLI 与 Codex 桌面版通用）：Approve、Esc、Cycle approvals、↑、Switch model、New session、Compact、↓。</string>
-    <string name="settings_profile_about_cursor">为 Cursor 调校的 8 个宏（`cursor-agent` 与 Cursor / VS Code 聊天面板通用）：Approve、Esc、Cycle mode、↑、Switch model（Cmd+/ · Ctrl+/）、New session、Diff、↓。</string>
-    <string name="settings_profile_future_label">后续</string>
-    <string name="settings_profile_future_body">自定义 profile（自己定标签、自己定按键）会在后续版本支持。</string>
+    <string name="settings_profile_about_claude_code">为 Claude Code 调校，8 个宏在操作台网格上。</string>
+    <string name="settings_profile_about_codex">为 `codex` CLI 与 Codex 桌面版调校。Shift+Tab 可切换审批模式。</string>
+    <string name="settings_profile_about_cursor">为 Cursor 桌面聊天与 agent mode 调校，沿用 Cursor 默认的 VS Code 快捷键。</string>
 
     <!-- 设置 → 重跑向导的确认弹窗。该动作只是把"引导已完成"标记重置，
          已配对主机、每台设备的目标系统都不会被清。这里把范围说清楚，
@@ -66,47 +61,46 @@
 
     <!-- 向导 – 介绍 -->
     <string name="onboarding_intro_title">为 vibe coding 定制的蓝牙键鼠</string>
-    <string name="onboarding_intro_body">Helm Pad 把手机变成通用蓝牙键盘 + 触控板，兼顾 Mac 与 Windows。内置 Claude Code、Codex、Cursor 三个 profile——批准、中断、切模型都在手边，最后一步选好日常在用的 agent。每个 profile 无论你用 CLI（`codex`、`cursor-agent`）还是桌面 / VS Code 聊天面板都能直接用。接下来 6 步：授权、配对、选目标系统、挑默认 agent。</string>
+    <string name="onboarding_intro_body">把手机变成 Mac / Windows 的蓝牙键盘 + 触控板，内置 Claude Code、Codex、Cursor 三套宏 profile。</string>
 
     <!-- 向导 – 进度 -->
     <string name="onboarding_step_counter">第 %1$d 步 / 共 %2$d 步</string>
 
     <!-- 向导 – 权限 -->
     <string name="onboarding_perm_title">授予蓝牙权限</string>
-    <string name="onboarding_perm_body">Android 12 及以上需要运行时授予蓝牙权限：Connect 用于发送键鼠事件，Advertise 让电脑能发现它。</string>
+    <string name="onboarding_perm_body">Connect 用于发送键鼠事件，Advertise 让电脑能发现 Helm Pad。</string>
     <string name="onboarding_perm_ok">所需权限已全部授予。</string>
     <string name="onboarding_perm_pending">还有未授予的权限。</string>
     <string name="onboarding_perm_request">授予权限</string>
 
     <!-- 向导 – 蓝牙 -->
     <string name="onboarding_bt_title">打开蓝牙</string>
-    <string name="onboarding_bt_body">配对前需要打开手机蓝牙。如果已经是开的，直接点下一步。</string>
+    <string name="onboarding_bt_body">配对前需要开启蓝牙。</string>
     <string name="onboarding_bt_ok">蓝牙已打开。</string>
     <string name="onboarding_bt_pending">蓝牙当前是关闭的。</string>
     <string name="onboarding_bt_open">打开蓝牙设置</string>
 
     <!-- 向导 – 配对 -->
     <string name="onboarding_pair_title">和电脑配对</string>
-    <string name="onboarding_pair_body">在 Mac 或 PC 的蓝牙面板上添加设备，然后用下方按钮跳到 Android 蓝牙设置完成配对。完成后会自动识别。</string>
+    <string name="onboarding_pair_body">在 Mac 或 PC 的蓝牙面板上添加 Helm Pad，然后用下方按钮跳到 Android 蓝牙设置完成配对。</string>
     <string name="onboarding_pair_open_settings">打开 Android 蓝牙设置</string>
     <string name="onboarding_pair_waiting">等待新配对设备出现…</string>
     <string name="onboarding_pair_pick">选中刚才配对的电脑</string>
 
     <!-- 向导 – 电量 -->
     <string name="onboarding_battery_title">让后台连接保持存活</string>
-    <string name="onboarding_battery_body">Android 激进的省电机制会在屏幕休眠后杀掉 HID 连接。把 Helm Pad 加入电量优化白名单能让它持续运行。这一步可以跳过，之后也能重新开启。</string>
+    <string name="onboarding_battery_body">没有电量豁免，屏幕休眠后 Android 可能杀掉 HID 连接。可跳过，之后再开启。</string>
     <string name="onboarding_battery_open">跳转到电量优化设置</string>
 
     <!-- 向导 – 主机目标 -->
     <string name="onboarding_target_title">这台电脑是什么系统？</string>
-    <string name="onboarding_target_body">选对之后，Cmd / Ctrl 等快捷键才能正确映射。之后可以在设置里改。</string>
+    <string name="onboarding_target_body">选对系统，Cmd / Ctrl 快捷键才能正确映射。之后可在设置里改。</string>
     <string name="onboarding_target_body_with_host">记住 \"%1$s\" 的目标系统，下次连接会自动套用。</string>
 
-    <!-- 向导 – profile。默认预选 Claude Code，只用 Claude 的用户可以一键
-         完成；Codex / Cursor 用户在这里切到自己的常用 agent。脚注明确告知
-         之后在设置里随时可改。 -->
+    <!-- 向导 – profile。默认预选 Claude Code；只用 Claude 的用户可以一键
+         完成。脚注明确告知之后在设置里随时可改。 -->
     <string name="onboarding_profile_title">选择默认 agent</string>
-    <string name="onboarding_profile_body">Helm Pad 内置了多个编码 agent 的 profile。这里选的 profile 就是打开操作台时默认显示的那套宏。</string>
+    <string name="onboarding_profile_body">这里选的 profile 决定操作台默认显示的那套宏。</string>
     <string name="onboarding_profile_loading">正在加载 profile…</string>
     <string name="onboarding_profile_footnote">之后可以随时在 设置 → 当前 profile 里切换。</string>
 
@@ -140,7 +134,6 @@
 
     <!-- Paired Hosts — 设置入口 -->
     <string name="paired_hosts_entry_title">已配对主机</string>
-    <string name="paired_hosts_entry_subtitle">管理 Helm Pad 连过的电脑，可重命名或移除。</string>
 
     <!-- Paired Hosts — 子页 -->
     <string name="paired_hosts_title">已配对主机</string>

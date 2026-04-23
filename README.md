@@ -6,7 +6,7 @@ English · [中文](README.zh.md)
 
 # Helm Pad
 
-> Turn the Android phone/pad in your hand into a small Bluetooth keyboard and trackpad that sits next to your laptop, so you can keep nudging an AI coding agent without leaving your seat — or your coffee.
+> The Android phone in your hand, as a small Bluetooth keyboard and trackpad for the laptop next to it — so you can keep nudging an AI coding agent without leaving your seat, or your coffee.
 
 **Website:** <https://huozhou.github.io/HelmPad/>
 
@@ -14,38 +14,38 @@ English · [中文](README.zh.md)
   <img src="assets/hero.svg" alt="Helm Pad hero" width="100%">
 </p>
 
-## Why I built it
+## Why
 
-I do most of my coding by pair-programming with an AI agent in a terminal. The agent does the typing; my job is mostly to keep nudging it — *yes, run that*, *no, try again*, *Esc, redo*, *switch model*, *new session*. Tiny inputs, but a lot of them.
+I code by pair-programming with an AI agent in a terminal. It types, I nudge. *Yes* — *no* — *Esc* — *switch model* — *new session*. Small inputs, a lot of them.
 
-What started to bother me wasn't the work, it was the posture. Every nudge pulled a hand off the keyboard or my eyes off the diff. And when I leaned back with a coffee while the agent was grinding on something long, the moment it paused I had to put the cup down, sit up, find the cursor, click — the break was gone before it started.
+What bothered me wasn't the work, it was the posture. Every nudge pulled a hand off the keyboard or my eyes off the diff. And when I leaned back with a coffee while the agent ground on something long, the moment it paused I had to put the cup down, sit up, find the cursor — the break was gone before it started.
 
-So I made a small Bluetooth keyboard + trackpad that runs on the phone I was already holding.
+So I made a small Bluetooth keyboard + trackpad from the phone I was already holding.
 
 ## What it does
 
-To the laptop it just looks like a regular Bluetooth keyboard and mouse — no companion app, no driver, no permissions dance. On the phone:
+To the laptop it's just a Bluetooth keyboard and mouse. No driver, no companion app, no permissions dance.
 
-- Eight macros in two rows, tuned for the agent you actually drive: **Claude Code**, **Codex**, or **Cursor**. Each profile works the same whether you're in the CLI (`codex`, `cursor-agent`) or the GUI (Codex app, Cursor / VS Code chat). Approve / Esc / Switch model / New session sit in the same place across all three; the middle two slots swap for the agent's own commands (Cycle mode, `/approvals`, `/diff`, etc.).
-- The rest of the screen is a real trackpad — single-finger move and tap, two-finger scroll, two-finger tap for right-click, long-press to drag.
-- It auto-detects whether the phone is paired to a Mac or to Windows and picks the matching modifier key (Cmd vs. Ctrl), so the same phone works on either machine without me thinking about it.
+On the phone:
+
+- **Eight macros**, tuned for Claude Code, Codex, or Cursor. Approve · Esc · ↑↓ live in the same spot across all three.
+- **A real trackpad** on the rest of the screen — move, scroll, right-click, drag.
+- **Cmd or Ctrl**, picked automatically for whichever laptop you paired.
 
 <p align="center">
   <img src="assets/loop.svg" alt="Steering an agent without leaving the keyboard" width="100%">
 </p>
 
-The use I keep coming back to: agent is running, I'm leaning back with the phone in one hand and a coffee in the other, half-scrolling something else. It pauses for input, I thumb *Approve*, leaning stays leaning. The break stays a break.
+The moment I keep coming back to: agent running, phone in one hand, coffee in the other. It pauses for a yes/no. Thumb taps *Approve*. Lean stays, coffee stays.
 
 ## Trying it
 
-You'll need an Android 9+ phone and a Mac or Windows machine.
+Android 9+ phone, Mac or Windows laptop.
 
-1. Grab the latest APK from Releases and install it.
-2. From your laptop's Bluetooth settings, pair the phone like any other keyboard.
-3. Open Helm Pad and follow the on-screen setup once. The last step picks the CLI you mostly drive — Claude Code is preselected, so if that's what you use you can just hit Next. You can change it anytime from Settings → Active profile.
-
-It works fine on the phone you carry day to day. It also works fine on a spare phone you keep on the desk, if you'd rather not mix it with personal use. There's nothing to install on the laptop side.
+1. Install the latest APK from Releases.
+2. Pair the phone from your laptop's Bluetooth settings — like any keyboard.
+3. Open Helm Pad; a short setup walks you through once.
 
 ## Licence
 
-Released under the MIT License — see [LICENSE](./LICENSE).
+MIT — see [LICENSE](./LICENSE).

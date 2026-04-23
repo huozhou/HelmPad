@@ -35,10 +35,12 @@ data class MacroDefinition(
  * @property id Stable profile identifier (e.g. `"profile.claude-code"`,
  *              `"profile.codex"`, `"profile.cursor"`). Never displayed;
  *              used as the key for persistence, icon lookup, and profile-gated
- *              UI logic like [ModelPickerSheet]. The same profile drives both
- *              CLI (`codex`, `cursor-agent`) and GUI (Codex app, Cursor /
- *              VS Code chat) surfaces — actions are picked so they work in
- *              either, which is why `"CLI"` is not in the display name.
+ *              UI logic like [ModelPickerSheet]. Profiles can target different
+ *              surfaces per agent: Codex's profile fires the same slash
+ *              commands in both the `codex` CLI and the Codex desktop app,
+ *              while Cursor's profile is tuned for the Cursor desktop chat /
+ *              agent mode (see the `add-codex-cursor-profiles` change,
+ *              decisions 8 and 11).
  * @property name Display name shown in the profile selector.
  * @property schemaVersion Major / minor / patch. Readers reject unknown major versions.
  */

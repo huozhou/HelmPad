@@ -42,12 +42,12 @@ class BundledProfileTest {
             "switch_model", "new_session", "compact", "arrow_down",
         ),
         "profile.codex" to setOf(
-            "approve", "escape", "cycle_approvals", "arrow_up",
+            "approve", "escape", "cycle_mode", "arrow_up",
             "switch_model", "new_session", "compact", "arrow_down",
         ),
         "profile.cursor" to setOf(
-            "approve", "escape", "cycle_mode", "arrow_up",
-            "switch_model", "new_session", "diff", "arrow_down",
+            "approve", "escape", "command_palette", "arrow_up",
+            "composer", "new_session", "inline_edit", "arrow_down",
         ),
     )
 
@@ -149,61 +149,88 @@ class BundledProfileTest {
     }
 
     /**
-     * `switch_model` action is picked per profile so the same button works in
-     * both the CLI and the GUI surface for that agent:
+     * `switch_model` is a Claude/Codex-only slot — both fire `Literal("/model\n")`.
+     * Claude's tap is intercepted by [ModelPickerSheet]; Codex drops into its own
+     * TUI `/model` menu.
      *
-     *  - Claude Code & Codex: `Literal("/model\n")`. Claude's tap is
-     *    intercepted by [ModelPickerSheet]; Codex drops into its own TUI
-     *    `/model` menu — both the `codex` CLI and the Codex app accept the
-     *    slash command.
-     *  - Cursor: `Chord(PRIMARY, SLASH)` — `Cmd+/` on macOS, `Ctrl+/` on
-     *    Windows. `cursor-agent` cycles to the next model; the Cursor /
-     *    VS Code chat panel binds the same shortcut.
+     * Cursor v1 omits `switch_model` entirely (decision 3 + decision 8 + decision
+     * 11 — no reliable default shortcut for model switching in Cursor desktop
+     * chat; slot is redirected to `composer`).
      */
     @Test
     fun switch_model_action_matches_profile_target() {
         val literalProfiles = setOf("profile.claude-code", "profile.codex")
-        val chordProfiles = setOf("profile.cursor")
 
         loadAll().forEach { profile ->
             val slot = profile.slots.singleOrNull { it.id == "switch_model" } ?: return@forEach
-            when (profile.id) {
-                in literalProfiles -> {
-                    val action = slot.action
-                    assertTrue(
-                        "profile ${profile.id}: switch_model must be Literal, got ${action::class.simpleName}",
-                        action is InputAction.Literal,
-                    )
-                    assertEquals(
-                        "profile ${profile.id}: switch_model literal should be '/model\\n'",
-                        "/model\n",
-                        (action as InputAction.Literal).text,
-                    )
-                }
-                in chordProfiles -> {
-                    val action = slot.action
-                    assertTrue(
-                        "profile ${profile.id}: switch_model must be Chord, got ${action::class.simpleName}",
-                        action is InputAction.Chord,
-                    )
-                    val chord = action as InputAction.Chord
-                    assertEquals(
-                        "profile ${profile.id}: switch_model must use PRIMARY only (Cmd/Ctrl+/)",
-                        setOf(Mod.PRIMARY),
-                        chord.modifiers,
-                    )
-                    assertEquals(
-                        "profile ${profile.id}: switch_model key must be SLASH (Cmd+/ on macOS, Ctrl+/ on Windows)",
-                        Key.SLASH,
-                        chord.key,
-                    )
-                }
-                else -> error(
-                    "profile ${profile.id}: no switch_model contract defined. " +
-                        "Update literalProfiles or chordProfiles in BundledProfileTest when shipping a new bundled profile.",
-                )
-            }
+            assertTrue(
+                "profile ${profile.id}: unexpected switch_model slot — only Claude / Codex " +
+                    "may carry it. Update literalProfiles in BundledProfileTest if a new " +
+                    "bundled profile is shipping with switch_model.",
+                profile.id in literalProfiles,
+            )
+            val action = slot.action
+            assertTrue(
+                "profile ${profile.id}: switch_model must be Literal, got ${action::class.simpleName}",
+                action is InputAction.Literal,
+            )
+            assertEquals(
+                "profile ${profile.id}: switch_model literal should be '/model\\n'",
+                "/model\n",
+                (action as InputAction.Literal).text,
+            )
         }
+    }
+
+    /**
+     * Cursor profile (decision 11) is built on stable default VS Code / Cursor
+     * shortcuts — each of the four flex slots must use the exact `PRIMARY[+SHIFT]`
+     * chord users already have in their muscle memory for VS Code.
+     */
+    @Test
+    fun cursor_flex_slots_match_vscode_defaults() {
+        val cursor = loadAll().singleOrNull { it.id == "profile.cursor" } ?: return
+        val bySlot = cursor.slots.associateBy { it.id }
+
+        assertChord(cursor.id, bySlot.getValue("command_palette"), setOf(Mod.PRIMARY, Mod.SHIFT), Key.P)
+        assertChord(cursor.id, bySlot.getValue("composer"), setOf(Mod.PRIMARY), Key.I)
+        assertChord(cursor.id, bySlot.getValue("new_session"), setOf(Mod.PRIMARY), Key.L)
+        assertChord(cursor.id, bySlot.getValue("inline_edit"), setOf(Mod.PRIMARY), Key.K)
+    }
+
+    /**
+     * Codex (decision 4 post-1.3a): `cycle_mode` is Shift+Tab for cycling
+     * approval modes, and the R2C3 slot is the original `/compact` (the
+     * originally-proposed `/review` does not exist in the current `codex` CLI).
+     */
+    @Test
+    fun codex_cycle_mode_and_compact_match_cli_commands() {
+        val codex = loadAll().singleOrNull { it.id == "profile.codex" } ?: return
+        val bySlot = codex.slots.associateBy { it.id }
+
+        assertChord(codex.id, bySlot.getValue("cycle_mode"), setOf(Mod.SHIFT), Key.TAB)
+
+        val compactAction = bySlot.getValue("compact").action
+        assertTrue(
+            "profile ${codex.id}: compact must be Literal, got ${compactAction::class.simpleName}",
+            compactAction is InputAction.Literal,
+        )
+        assertEquals(
+            "profile ${codex.id}: compact literal should be '/compact\\n'",
+            "/compact\n",
+            (compactAction as InputAction.Literal).text,
+        )
+
+        val newSessionAction = bySlot.getValue("new_session").action
+        assertTrue(
+            "profile ${codex.id}: new_session must be Literal, got ${newSessionAction::class.simpleName}",
+            newSessionAction is InputAction.Literal,
+        )
+        assertEquals(
+            "profile ${codex.id}: new_session literal should be '/new\\n' (Codex uses /new, not /clear)",
+            "/new\n",
+            (newSessionAction as InputAction.Literal).text,
+        )
     }
 
     /**
@@ -255,6 +282,30 @@ class BundledProfileTest {
         assertTrue(
             "profile ${profile.id}: arrow_down must be Chord([], DOWN_ARROW), got $arrowDown",
             arrowDown is InputAction.Chord && arrowDown.modifiers.isEmpty() && arrowDown.key == Key.DOWN_ARROW,
+        )
+    }
+
+    private fun assertChord(
+        profileId: String,
+        slot: MacroDefinition,
+        expectedModifiers: Set<Mod>,
+        expectedKey: Key,
+    ) {
+        val action = slot.action
+        assertTrue(
+            "profile $profileId: slot ${slot.id} must be Chord, got ${action::class.simpleName}",
+            action is InputAction.Chord,
+        )
+        val chord = action as InputAction.Chord
+        assertEquals(
+            "profile $profileId: slot ${slot.id} modifiers must be $expectedModifiers",
+            expectedModifiers,
+            chord.modifiers,
+        )
+        assertEquals(
+            "profile $profileId: slot ${slot.id} key must be $expectedKey",
+            expectedKey,
+            chord.key,
         )
     }
 

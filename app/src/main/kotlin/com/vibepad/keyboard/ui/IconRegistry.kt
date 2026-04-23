@@ -11,8 +11,11 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Compress
 import androidx.compose.material.icons.filled.Difference
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.Radar
 import androidx.compose.material.icons.filled.RestartAlt
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -36,6 +39,9 @@ internal object IconRegistry {
         "close" to Icons.Filled.Close,
         "arrow_upward" to Icons.Filled.ArrowUpward,
         "arrow_downward" to Icons.Filled.ArrowDownward,
+        "search" to Icons.Filled.Search,
+        "edit_note" to Icons.Filled.EditNote,
+        "edit" to Icons.Filled.Edit,
     )
 
     fun resolve(iconRef: String): ImageVector = TABLE[iconRef] ?: Icons.Filled.Radar

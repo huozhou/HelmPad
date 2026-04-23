@@ -2,6 +2,7 @@ package com.vibepad.keyboard.ui
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.combinedClickable
@@ -51,16 +52,17 @@ import com.vibepad.keyboard.macro.Profile
  * exactly its natural height; [LayoutBudget.macroGridHeight] mirrors the math.
  *
  * Only `new_session` (`/clear`) carries `destructive = true` — it wipes the current
- * Claude Code context and can't be undone. It renders with the error-colour
- * container and triggers the stronger haptic so an accidental tap feels obviously
- * different from routine approvals.
+ * Claude Code context and can't be undone. Its ring is tinted `error` (vs. the
+ * neutral `outlineVariant` for the others) and the stronger haptic on tap makes
+ * an accidental press obviously different from routine approvals.
  *
- * Press feedback uses a four-layer stack — M3 ripple (clipped by the tile's
- * rounded-corner shape because `.clip(shape)` sits above `.combinedClickable` in
- * the modifier chain), a 0.96 scale drop animated over 80ms, an 0.88 alpha
- * darken on the container tint, and a `tonalElevation` drop from 2dp to 0dp.
- * Each layer on its own is subtle; together they give the tile a confident
- * "button-that-gets-pushed-in" feel without ever flashing content alpha.
+ * Visual language (`minimalist-visual-pass`): tiles are unfilled — just a
+ * hairline outline (0.5dp `outlineVariant`, or 1dp `error` for destructive) over
+ * the ambient surface. The previous lilac `primaryContainer` fill made every
+ * tile a heavyweight coloured block; stripping it to an outline lets the icon
+ * + label carry meaning and matches the Apple HIG / Linear-ish direction the
+ * project is heading. Press feedback is a three-layer stack: M3 ripple, a 0.96
+ * scale drop over 80ms, and the border briefly tints toward `primary`.
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -106,13 +108,9 @@ private fun MacroTile(
     val context = LocalContext.current
     val interactionSource = remember { MutableInteractionSource() }
 
-    // Press feedback stack (four layers) — each one is subtle on its own but
-    // together they give the tile a confident "button-that-gets-pushed-in" feel:
-    //   1. Material3 ripple via [LocalIndication] (theme-provided).
-    //   2. `graphicsLayer` scale drop to 0.96 over 80ms.
-    //   3. Container tint darkens to alpha 0.88 of `baseColor`.
-    //   4. `tonalElevation` drops from 2dp to 0dp so the tile flattens into the
-    //      surface.
+    // Press feedback (three layers): M3 ripple, a 0.96 scale drop over 80ms, and
+    // the border switches to the primary tint while held. No container fill
+    // change — the outlined tile keeps the minimalist surface across states.
     val pressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
         targetValue = if (pressed) 0.96f else 1f,
@@ -120,10 +118,16 @@ private fun MacroTile(
         label = "tile-scale",
     )
 
-    val baseColor = if (slot.destructive) MaterialTheme.colorScheme.errorContainer
-    else MaterialTheme.colorScheme.primaryContainer
-    val contentColor = if (slot.destructive) MaterialTheme.colorScheme.onErrorContainer
-    else MaterialTheme.colorScheme.onPrimaryContainer
+    val accent = if (slot.destructive) MaterialTheme.colorScheme.error
+    else MaterialTheme.colorScheme.primary
+    val restingBorderColor = if (slot.destructive) MaterialTheme.colorScheme.error
+    else MaterialTheme.colorScheme.outlineVariant
+    val restingBorderWidth = if (slot.destructive) DESTRUCTIVE_BORDER_WIDTH else BORDER_WIDTH
+    val borderColor = if (pressed) accent else restingBorderColor
+    val borderWidth = if (pressed) DESTRUCTIVE_BORDER_WIDTH else restingBorderWidth
+
+    val contentColor = if (slot.destructive) MaterialTheme.colorScheme.error
+    else MaterialTheme.colorScheme.onSurface
 
     val label = slot.label
 
@@ -148,9 +152,10 @@ private fun MacroTile(
                 onLongClick = null,
             ),
         shape = shape,
-        color = if (pressed) baseColor.copy(alpha = 0.88f) else baseColor,
+        color = MaterialTheme.colorScheme.surface,
         contentColor = contentColor,
-        tonalElevation = if (pressed) 0.dp else 2.dp,
+        tonalElevation = 0.dp,
+        border = BorderStroke(width = borderWidth, color = borderColor),
     ) {
         Column(
             modifier = Modifier
@@ -183,6 +188,8 @@ private fun MacroTile(
 
 // Layout parameters kept at file scope so Paparazzi snapshots and future theming
 // see the same numbers. Changing any of these invalidates golden images.
-private val CORNER_RADIUS = 18.dp
+private val CORNER_RADIUS = 14.dp
 private val ICON_SIZE = 28.dp
 private val ICON_LABEL_GAP = 6.dp
+private val BORDER_WIDTH = 0.5.dp
+private val DESTRUCTIVE_BORDER_WIDTH = 1.dp

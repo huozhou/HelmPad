@@ -67,7 +67,6 @@ fun MainScreen(
 
     Scaffold(contentWindowInsets = WindowInsets.safeDrawing) { inner ->
         Column(modifier = Modifier.fillMaxSize().padding(inner)) {
-            val profileDisplayName = profile.name
             VibeAppBar(
                 hostTarget = hostTarget,
                 onOpenHostStatusSheet = { showHostStatusSheet = true },
@@ -89,7 +88,6 @@ fun MainScreen(
                 linkState = linkState,
                 touchpadController = touchpadController,
                 onFireMacro = onFireMacro,
-                profileDisplayName = profileDisplayName,
                 modifier = Modifier.fillMaxSize().padding(12.dp),
             )
         }
@@ -124,7 +122,6 @@ private fun BodyLayout(
     linkState: HidLinkState,
     touchpadController: TouchpadController,
     onFireMacro: (slotId: String) -> Unit,
-    profileDisplayName: String,
     modifier: Modifier = Modifier,
 ) {
     val isLandscape = LocalConfiguration.current.screenWidthDp > LocalConfiguration.current.screenHeightDp
@@ -141,7 +138,6 @@ private fun BodyLayout(
             )
             Column(modifier = Modifier.weight(0.4f).fillMaxSize()) {
                 if (!interactive) DisconnectedBanner()
-                ProfileSectionHeader(profileId = profile.id, profileName = profileDisplayName)
                 MacroGrid(
                     profile = profile,
                     onFire = { if (interactive) onFireMacro(it.id) },
@@ -183,7 +179,6 @@ private fun BodyLayout(
                     )
                     Column(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
                         if (!interactive) DisconnectedBanner()
-                        ProfileSectionHeader(profileId = profile.id, profileName = profileDisplayName)
                         MacroGrid(
                             profile = profile,
                             onFire = { if (interactive) onFireMacro(it.id) },
@@ -207,7 +202,6 @@ private fun BodyLayout(
                     )
                     Column(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
                         if (!interactive) DisconnectedBanner()
-                        ProfileSectionHeader(profileId = profile.id, profileName = profileDisplayName)
                         MacroGrid(
                             profile = profile,
                             onFire = { if (interactive) onFireMacro(it.id) },
@@ -241,7 +235,6 @@ internal object LayoutBudget {
     val SafetyBuffer: Dp = 8.dp
     val AppBarHeight: Dp = 56.dp
     val DividerHeight: Dp = 1.dp
-    val ProfileHeaderHeight: Dp = 32.dp
     val MaxBannerHeight: Dp = 80.dp
 
     /**
@@ -283,7 +276,6 @@ internal object LayoutBudget {
         maxBannerHeight +
         DividerHeight +
         TouchpadMinHeight +
-        ProfileHeaderHeight +
         macroGridHeight(screenWidth, slotCount) +
         SafetyBuffer
 }

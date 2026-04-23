@@ -1,7 +1,7 @@
 package com.vibepad.keyboard.ui
 
 import android.os.SystemClock
-import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -40,10 +40,15 @@ fun TouchpadSurface(
     val scrollUnitPx = with(density) { SCROLL_UNIT_DP.dp.toPx() }
     val context = LocalContext.current
 
+    val surfaceShape = RoundedCornerShape(20.dp)
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(20.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .clip(surfaceShape)
+            .border(
+                width = 0.5.dp,
+                color = MaterialTheme.colorScheme.outlineVariant,
+                shape = surfaceShape,
+            )
             .pointerInput(Unit) {
                 while (true) {
                     awaitPointerEventScope {

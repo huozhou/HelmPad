@@ -161,6 +161,7 @@ private fun HostBadge(
         Icon(
             painter = painterResource(id = iconRes),
             contentDescription = null,
+            tint = MaterialTheme.colorScheme.outline,
             modifier = Modifier.size(16.dp),
         )
     }

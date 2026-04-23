@@ -18,7 +18,7 @@
       "destructive": false
     },
     {
-      "id": "cycle_approvals",
+      "id": "cycle_mode",
       "label": "Cycle approvals",
       "iconRef": "autorenew",
       "action": { "type": "Chord", "modifiers": ["SHIFT"], "key": "TAB" },

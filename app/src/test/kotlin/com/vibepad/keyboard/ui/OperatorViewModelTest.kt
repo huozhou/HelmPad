@@ -147,30 +147,25 @@ class OperatorViewModelTest {
     }
 
     /**
-     * Cursor uses a Chord(PRIMARY, SLASH) — Cmd+/ on macOS, Ctrl+/ on Windows —
-     * to cycle models in both `cursor-agent` and the Cursor / VS Code chat
-     * panel. The tap must bypass [ModelPickerSheet] entirely and emit a single
-     * press frame carrying the platform's primary modifier + SLASH, followed
-     * by a release frame.
+     * Cursor v1 has no `switch_model` slot (add-codex-cursor-profiles decision
+     * 11 — Cursor desktop has no default shortcut for model switching). Its
+     * R2C1 slot is `composer` instead, firing `Cmd+I` on macOS / `Ctrl+I` on
+     * Windows to open the Cursor Composer panel.
      */
     @Test
-    fun `tap switch_model in cursor profile fires chord and does not open sheet`() = runBlocking {
+    fun `tap composer in cursor profile fires primary plus i and does not open sheet`() = runBlocking {
         val vm = buildVm(loadBundled("cursor.json"))
-        val sent = collectFrames { vm.fireMacro("switch_model") }
+        val sent = collectFrames { vm.fireMacro("composer") }
         assertFalse("sheet must remain closed for Cursor", vm.showModelPicker.value)
 
         val keyboardFrames = sent.filterIsInstance<HidFrame.Keyboard>()
         assertEquals(
-            "expected one press + one release for Cmd/Ctrl+/, got $keyboardFrames",
+            "expected one press + one release for Cmd/Ctrl+I, got $keyboardFrames",
             2,
             keyboardFrames.size,
         )
         val press = keyboardFrames[0]
-        assertEquals(
-            "press frame must carry SLASH usage",
-            Key.SLASH.usage,
-            press.keys.single(),
-        )
+        assertEquals("press frame must carry I usage", Key.I.usage, press.keys.single())
         assertTrue(
             "press modifier byte must be non-zero (Cmd or Ctrl), got ${press.modifier}",
             press.modifier != 0,
@@ -178,6 +173,46 @@ class OperatorViewModelTest {
         val release = keyboardFrames[1]
         assertTrue("release frame must carry no keys", release.keys.isEmpty())
         assertEquals("release modifier byte must be zero", 0, release.modifier)
+    }
+
+    /**
+     * Cursor's `new_session` fires `Cmd+L` / `Ctrl+L` to open a new chat tab —
+     * the desktop Cursor equivalent of Claude's `/clear↵` and Codex's `/new↵`.
+     */
+    @Test
+    fun `tap new_session in cursor profile fires primary plus l`() = runBlocking {
+        val vm = buildVm(loadBundled("cursor.json"))
+        val sent = collectFrames { vm.fireMacro("new_session") }
+        assertFalse("sheet must remain closed for Cursor", vm.showModelPicker.value)
+
+        val keyboardFrames = sent.filterIsInstance<HidFrame.Keyboard>()
+        assertEquals(2, keyboardFrames.size)
+        val press = keyboardFrames[0]
+        assertEquals("press frame must carry L usage", Key.L.usage, press.keys.single())
+        assertTrue(
+            "press modifier byte must be non-zero (Cmd or Ctrl), got ${press.modifier}",
+            press.modifier != 0,
+        )
+    }
+
+    /**
+     * Cursor's `command_palette` slot fires `Cmd+Shift+P` / `Ctrl+Shift+P` —
+     * the universal escape hatch for VS Code-family editors.
+     */
+    @Test
+    fun `tap command_palette in cursor profile fires primary plus shift plus p`() = runBlocking {
+        val vm = buildVm(loadBundled("cursor.json"))
+        val sent = collectFrames { vm.fireMacro("command_palette") }
+
+        val keyboardFrames = sent.filterIsInstance<HidFrame.Keyboard>()
+        assertEquals(2, keyboardFrames.size)
+        val press = keyboardFrames[0]
+        assertEquals("press frame must carry P usage", Key.P.usage, press.keys.single())
+        // Both PRIMARY (Cmd / Ctrl) and SHIFT must be set.
+        assertTrue(
+            "press modifier byte must be non-zero (PRIMARY+SHIFT), got ${press.modifier}",
+            press.modifier != 0,
+        )
     }
 
     /**

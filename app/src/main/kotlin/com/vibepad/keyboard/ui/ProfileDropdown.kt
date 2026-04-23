@@ -85,9 +85,6 @@ fun ProfileDropdown(
                 )
             },
             headlineContent = { Text(current.name) },
-            supportingContent = {
-                Text(stringResource(R.string.settings_profile_dropdown_supporting))
-            },
             trailingContent = {
                 Icon(
                     imageVector = Icons.Filled.ArrowDropDown,
